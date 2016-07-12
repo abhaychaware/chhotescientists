@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <!--
+         <item
+             android:id="@+id/nav_home"
+             android:icon="@mipmap/ic_home_grey600_48dp"
+             android:title="Home" />
+-->
+        <item
+            android:id="@+id/nav_calender"
+            android:icon="@mipmap/ic_calendar_check_grey600_48dp"
+            android:title="View Calender" />
+
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@mipmap/ic_account_grey600_48dp"
+            android:title="View My Profile" />
+
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@mipmap/ic_earth_grey600_48dp"
+            android:title="Send Feedback" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic_logout_grey600_48dp"
+            android:title="Logout" />
+    </group>
+
+    <item android:title="Help Us To Grow :">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@mipmap/ic_share_variant_grey600_48dp"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@mipmap/ic_google_play_grey600_48dp"
+                android:title="Rate App" />
+        </menu>
+    </item>
+
+</menu>

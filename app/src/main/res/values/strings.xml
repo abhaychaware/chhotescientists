@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Chhote Scientists</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="str_area_of_living">Select Area Of Residence</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_passwod">Change Password</string>
+    <string name="send_feedback_msg">Send Feedback</string>
+    <string name="cs_center_prompt">Chhote Scientists Center</string>
+    <string name="my_profile">View My Profile</string>
+    <string name="exp_list">List Of Experiments</string>
+    <string name="exp_detail">Experiment Detail</string>
+    <string name="play_video">Video View</string>
+    <string name="view_calender">View My Calender</string>
+    <!-- notification msgs-->
+    <string name="notify_welcome">Welcome to Chhote Scientists</string>
+
+</resources>

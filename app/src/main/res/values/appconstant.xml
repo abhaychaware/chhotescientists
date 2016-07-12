@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- Registration screen-->
+    <string name="placeholder_username">Email/Mobile</string>
+    <string name="placeholder_password">Password</string>
+    <string name="placeholder_confirmPassword">Confirm Password</string>
+
+    <string name="p_fullname">Fullname</string>
+    <string name="p_email">Email</string>
+    <string name="p_mobile">Mobile</string>
+
+    <!-- login screen-->
+    <string name="login_loading">Logging in...</string>
+
+
+</resources>
