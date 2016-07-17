@@ -17,7 +17,7 @@ public class CheckInNumberQuestion extends CheckInQuestion {
     public View getQuestionView(Context context) {
         EditText numberInput = new EditText(context);
         numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        numberInput.setMinimumWidth(100);
+        numberInput.setHint("Enter number here.");
         return numberInput;
     }
 }
