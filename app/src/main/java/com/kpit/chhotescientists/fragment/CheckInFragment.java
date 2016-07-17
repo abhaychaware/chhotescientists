@@ -96,6 +96,11 @@ public class CheckInFragment extends Fragment implements
         CheckInAdapter checkInAdapter = new CheckInAdapter(checkInItemsList, getContext());
         recyclerView.setAdapter(checkInAdapter);
 
+        // TODO: handle input clearing upon recycling..
+        //      When views are recycled, you need to persist
+        //      the input data (text, star ratings, etc) or
+        //      else it will get filled in with old cards' data.
+
         progressBar.setVisibility(View.GONE);
         swipeLayout.setRefreshing(false);
     }
