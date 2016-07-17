@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity
 
         adapter.addFragment(new UpdateFragment(), "Updates");
         adapter.addFragment(new ExperimentsFragment(), "Experiments");
+        adapter.addFragment(new CheckInFragment(), "Check-ins");
         viewPager.setAdapter(adapter);
     }
 
