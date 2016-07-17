@@ -45,6 +45,7 @@ public class CheckInAdapter extends RecyclerView.Adapter<CheckInViewHolder> {
         for (CheckInQuestion question : item.getQuestions()) {
             TextView itemQuestionText = new TextView(context);
             itemQuestionText.setText(question.getQuestionText());
+            itemQuestionText.setTextSize(18);
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
