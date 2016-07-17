@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.common.MyPreferences;
+import com.kpit.chhotescientists.fragment.CheckInFragment;
 import com.kpit.chhotescientists.fragment.ExperimentsFragment;
 import com.kpit.chhotescientists.fragment.UpdateFragment;
 import com.kpit.chhotescientists.util.ConnectionDetector;
@@ -56,8 +57,10 @@ public class MainActivity extends AppCompatActivity
         //single sign on flag
         myPreferences.setFirstTimeLaunch(false);
 
-        navUsername = (TextView) findViewById(R.id.nav_username);
-        navEmail = (TextView) findViewById(R.id.nav_email);
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+
+        navUsername = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_username);
+        navEmail = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_email);
 
         navUsername.setText(myPreferences.getUserFullname());
         navEmail.setText(myPreferences.getUserEmail());
