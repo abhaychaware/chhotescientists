@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.common.MyPreferences;
-import com.kpit.chhotescientists.fragment.CheckInFragment;
+import com.kpit.chhotescientists.fragment.SessionFragment;
 import com.kpit.chhotescientists.fragment.ExperimentsFragment;
 import com.kpit.chhotescientists.fragment.UpdateFragment;
 import com.kpit.chhotescientists.util.ConnectionDetector;
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
         adapter.addFragment(new UpdateFragment(), "Updates");
         adapter.addFragment(new ExperimentsFragment(), "Experiments");
-        adapter.addFragment(new CheckInFragment(), "Check-ins");
+        adapter.addFragment(new SessionFragment(), "Sessions");
         viewPager.setAdapter(adapter);
     }
 

@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class CheckInItem {
     // TODO: Use GSON. @Expose, etc.
+
+    // TODO: DELETE! Replace with SessionEvent!
     List<CheckInQuestion> questions;
 
     public CheckInItem() {

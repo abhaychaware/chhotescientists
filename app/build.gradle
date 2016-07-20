@@ -44,6 +44,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.github.npanigrahy:Custom-Calendar-View:v1.0'
     compile 'com.android.support:support-v4:23.4.0'
+
+    compile 'com.google.code.gson:gson:2.4'
 }
 repositories {
     maven { url "https://jitpack.io" }
