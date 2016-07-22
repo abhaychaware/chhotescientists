@@ -1,6 +1,7 @@
 package com.kpit.chhotescientists.model;
 
 import android.content.Context;
+import android.os.Parcel;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,10 @@ public class CheckInNumberQuestion extends CheckInQuestion {
         super(question);
     }
 
+    public CheckInNumberQuestion(Parcel in) {
+        super(in);
+    }
+
     @Override
     public View getQuestionView(Context context) {
         EditText numberInput = new EditText(context);
@@ -20,4 +25,16 @@ public class CheckInNumberQuestion extends CheckInQuestion {
         numberInput.setHint("Enter number here.");
         return numberInput;
     }
+
+    public static final Creator<CheckInNumberQuestion> CREATOR = new Creator<CheckInNumberQuestion>() {
+        @Override
+        public CheckInNumberQuestion createFromParcel(Parcel in) {
+            return new CheckInNumberQuestion(in);
+        }
+
+        @Override
+        public CheckInNumberQuestion[] newArray(int size) {
+            return new CheckInNumberQuestion[size];
+        }
+    };
 }

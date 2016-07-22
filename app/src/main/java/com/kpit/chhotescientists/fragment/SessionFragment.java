@@ -24,7 +24,6 @@ import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.adapter.SessionAdapter;
 import com.kpit.chhotescientists.external.RuntimeTypeAdapterFactory;
 import com.kpit.chhotescientists.model.CheckInBooleanQuestion;
-import com.kpit.chhotescientists.model.CheckInItem;
 import com.kpit.chhotescientists.model.CheckInNumberQuestion;
 import com.kpit.chhotescientists.model.CheckInQuestion;
 import com.kpit.chhotescientists.model.CheckInStarRating;
