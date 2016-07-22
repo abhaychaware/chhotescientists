@@ -3,6 +3,7 @@ package com.kpit.chhotescientists.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,10 @@ public class SessionEvent implements Parcelable {
 
     protected SessionEvent(Parcel in) {
         title = in.readString();
+        questions = new ArrayList<>();
 
         // Write the stored list to this.questions:
-        in.readList(questions, List.class.getClassLoader());
+        in.readList(questions, CheckInQuestion.class.getClassLoader());
     }
 
     @Override

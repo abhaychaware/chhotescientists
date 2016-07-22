@@ -2,7 +2,6 @@ package com.kpit.chhotescientists.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.kpit.chhotescientists.adapter.viewholders.SessionViewHolder;
 import com.kpit.chhotescientists.model.Session;
 import com.kpit.chhotescientists.model.SessionEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +57,8 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
                 public void onClick(View v) {
                     Intent sessionCheckInIntent = new Intent();
                     sessionCheckInIntent.setClass(context, SessionCheckInActivity.class);
-                    sessionCheckInIntent.putExtra("EVENT", event);
+                    sessionCheckInIntent.putExtra(SessionCheckInActivity.EVENT_KEY, event);
+                    context.startActivity(sessionCheckInIntent);
                 }
             });
 

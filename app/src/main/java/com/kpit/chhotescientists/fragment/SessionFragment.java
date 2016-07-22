@@ -44,8 +44,6 @@ public class SessionFragment extends Fragment implements
     private SwipeRefreshLayout swipeLayout;
     private RecyclerView recyclerView;
 
-    private ArrayList<CheckInItem> checkInItemsList;
-
     public SessionFragment() {
         // Required empty public constructor
     }
@@ -55,8 +53,6 @@ public class SessionFragment extends Fragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_session, container, false);
-
-        checkInItemsList = new ArrayList<>();
 
         //listView = (ListView) v.findViewById(R.id.listView);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar2);
