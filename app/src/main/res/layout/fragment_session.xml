@@ -17,7 +17,6 @@
             android:id="@+id/check_in_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             android:scrollbars="vertical" />
 
     </android.support.v4.widget.SwipeRefreshLayout>

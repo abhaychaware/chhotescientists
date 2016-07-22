@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:tint="@color/colorPrimary"
         android:layout_gravity="top|end"
-        android:layout_margin="12dp"
+        android:layout_margin="18dp"
+        android:id="@+id/expand_arrow"
         android:src="@android:drawable/arrow_down_float"/>
 
     <LinearLayout
