@@ -8,12 +8,12 @@ import android.widget.RatingBar;
 /**
  * Created by grahamearley on 7/16/16.
  */
-public class CheckInStarRating extends CheckInQuestion {
-    public CheckInStarRating(String question) {
+public class StarRatingQuestion extends CheckInQuestion {
+    public StarRatingQuestion(String question) {
         super(question);
     }
 
-    public CheckInStarRating(Parcel in) {
+    public StarRatingQuestion(Parcel in) {
         super(in);
     }
 
@@ -24,15 +24,15 @@ public class CheckInStarRating extends CheckInQuestion {
         return ratingBar;
     }
 
-    public static final Creator<CheckInStarRating> CREATOR = new Creator<CheckInStarRating>() {
+    public static final Creator<StarRatingQuestion> CREATOR = new Creator<StarRatingQuestion>() {
         @Override
-        public CheckInStarRating createFromParcel(Parcel in) {
-            return new CheckInStarRating(in);
+        public StarRatingQuestion createFromParcel(Parcel in) {
+            return new StarRatingQuestion(in);
         }
 
         @Override
-        public CheckInStarRating[] newArray(int size) {
-            return new CheckInStarRating[size];
+        public StarRatingQuestion[] newArray(int size) {
+            return new StarRatingQuestion[size];
         }
     };
 }

@@ -23,10 +23,10 @@ import com.google.gson.GsonBuilder;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.adapter.SessionAdapter;
 import com.kpit.chhotescientists.external.RuntimeTypeAdapterFactory;
-import com.kpit.chhotescientists.model.CheckInBooleanQuestion;
-import com.kpit.chhotescientists.model.CheckInNumberQuestion;
+import com.kpit.chhotescientists.model.BooleanQuestion;
+import com.kpit.chhotescientists.model.NumberQuestion;
 import com.kpit.chhotescientists.model.CheckInQuestion;
-import com.kpit.chhotescientists.model.CheckInStarRating;
+import com.kpit.chhotescientists.model.StarRatingQuestion;
 import com.kpit.chhotescientists.model.Session;
 import com.kpit.chhotescientists.util.AppController;
 
@@ -114,9 +114,9 @@ public class SessionFragment extends Fragment implements
 
         final RuntimeTypeAdapterFactory<CheckInQuestion> questionFactory = RuntimeTypeAdapterFactory
                 .of(CheckInQuestion.class, "question_type")
-                .registerSubtype(CheckInBooleanQuestion.class, "boolean")
-                .registerSubtype(CheckInStarRating.class, "star_rating")
-                .registerSubtype(CheckInNumberQuestion.class, "number");
+                .registerSubtype(BooleanQuestion.class, "boolean")
+                .registerSubtype(StarRatingQuestion.class, "star_rating")
+                .registerSubtype(NumberQuestion.class, "number");
 
         ArrayList<Session> sessions = new ArrayList<>();
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(questionFactory).create();
@@ -140,33 +140,4 @@ public class SessionFragment extends Fragment implements
         progressBar.setVisibility(View.GONE);
         swipeLayout.setRefreshing(false);
     }
-
-//    private void loadData() {
-//        // Dummy data for now. TODO @graham: hookup with backend!
-//        CheckInBooleanQuestion materialsRecieved = new CheckInBooleanQuestion("Did you recieve the materials?");
-//        CheckInNumberQuestion studentCountQuestion = new CheckInNumberQuestion("How many students were there?");
-//        CheckInStarRating overallRating = new CheckInStarRating("How did it go?");
-//        CheckInStarRating testRating = new CheckInStarRating("Rate this question:");
-//
-//        CheckInItem checkInItem = new CheckInItem();
-//        checkInItem.addQuestion(materialsRecieved);
-//        checkInItem.addQuestion(studentCountQuestion);
-//        checkInItem.addQuestion(overallRating);
-//        checkInItem.addQuestion(testRating);
-//
-//        checkInItemsList.add(checkInItem);
-//
-//        SessionAdapter checkInAdapter = new SessionAdapter(checkInItemsList, getContext());
-//        recyclerView.setAdapter(checkInAdapter);
-//
-//        // TODO: handle input clearing upon recycling..
-//        //      When views are recycled, you need to persist
-//        //      the input data (text, star ratings, etc) or
-//        //      else it will get filled in with old cards' data.
-//
-//        progressBar.setVisibility(View.GONE);
-//        swipeLayout.setRefreshing(false);
-//    }
-
-
 }

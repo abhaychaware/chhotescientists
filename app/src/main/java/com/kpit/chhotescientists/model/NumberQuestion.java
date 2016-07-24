@@ -9,12 +9,12 @@ import android.widget.EditText;
 /**
  * Created by grahamearley on 7/16/16.
  */
-public class CheckInNumberQuestion extends CheckInQuestion {
-    public CheckInNumberQuestion(String question) {
+public class NumberQuestion extends CheckInQuestion {
+    public NumberQuestion(String question) {
         super(question);
     }
 
-    public CheckInNumberQuestion(Parcel in) {
+    public NumberQuestion(Parcel in) {
         super(in);
     }
 
@@ -26,15 +26,15 @@ public class CheckInNumberQuestion extends CheckInQuestion {
         return numberInput;
     }
 
-    public static final Creator<CheckInNumberQuestion> CREATOR = new Creator<CheckInNumberQuestion>() {
+    public static final Creator<NumberQuestion> CREATOR = new Creator<NumberQuestion>() {
         @Override
-        public CheckInNumberQuestion createFromParcel(Parcel in) {
-            return new CheckInNumberQuestion(in);
+        public NumberQuestion createFromParcel(Parcel in) {
+            return new NumberQuestion(in);
         }
 
         @Override
-        public CheckInNumberQuestion[] newArray(int size) {
-            return new CheckInNumberQuestion[size];
+        public NumberQuestion[] newArray(int size) {
+            return new NumberQuestion[size];
         }
     };
 }

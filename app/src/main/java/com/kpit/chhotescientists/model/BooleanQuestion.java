@@ -8,12 +8,12 @@ import android.widget.ToggleButton;
 /**
  * Created by grahamearley on 7/16/16.
  */
-public class CheckInBooleanQuestion extends CheckInQuestion {
-    public CheckInBooleanQuestion(String question) {
+public class BooleanQuestion extends CheckInQuestion {
+    public BooleanQuestion(String question) {
         super(question);
     }
 
-    public CheckInBooleanQuestion(Parcel in) {
+    public BooleanQuestion(Parcel in) {
         super(in.readString());
     }
 
@@ -32,15 +32,15 @@ public class CheckInBooleanQuestion extends CheckInQuestion {
         dest.writeString(this.question);
     }
 
-    public static final Creator<CheckInBooleanQuestion> CREATOR = new Creator<CheckInBooleanQuestion>() {
+    public static final Creator<BooleanQuestion> CREATOR = new Creator<BooleanQuestion>() {
         @Override
-        public CheckInBooleanQuestion createFromParcel(Parcel in) {
-            return new CheckInBooleanQuestion(in);
+        public BooleanQuestion createFromParcel(Parcel in) {
+            return new BooleanQuestion(in);
         }
 
         @Override
-        public CheckInBooleanQuestion[] newArray(int size) {
-            return new CheckInBooleanQuestion[size];
+        public BooleanQuestion[] newArray(int size) {
+            return new BooleanQuestion[size];
         }
     };
 
