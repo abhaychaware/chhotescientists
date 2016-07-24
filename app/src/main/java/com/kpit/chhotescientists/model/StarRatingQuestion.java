@@ -1,5 +1,6 @@
 package com.kpit.chhotescientists.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.view.View;
@@ -18,8 +19,8 @@ public class StarRatingQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Context context) {
-        RatingBar ratingBar = new RatingBar(context);
+    public View getQuestionView(Activity activity) {
+        RatingBar ratingBar = new RatingBar(activity);
         ratingBar.setNumStars(5);
         return ratingBar;
     }

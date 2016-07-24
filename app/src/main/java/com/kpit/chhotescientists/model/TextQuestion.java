@@ -1,5 +1,6 @@
 package com.kpit.chhotescientists.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.view.View;
@@ -19,8 +20,8 @@ public class TextQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Context context) {
-        return new EditText(context);
+    public View getQuestionView(Activity activity) {
+        return new EditText(activity);
     }
 
     public static final Creator<TextQuestion> CREATOR = new Creator<TextQuestion>() {

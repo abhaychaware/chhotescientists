@@ -1,5 +1,6 @@
 package com.kpit.chhotescientists.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,7 +20,7 @@ public abstract class CheckInQuestion implements Parcelable {
         this(in.readString());
     }
 
-    public abstract View getQuestionView(Context context);
+    public abstract View getQuestionView(Activity activity);
 
     public String getQuestionText() {
         return this.question;

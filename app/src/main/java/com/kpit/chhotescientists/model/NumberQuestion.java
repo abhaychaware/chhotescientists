@@ -1,5 +1,6 @@
 package com.kpit.chhotescientists.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.text.InputType;
@@ -19,8 +20,8 @@ public class NumberQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Context context) {
-        EditText numberInput = new EditText(context);
+    public View getQuestionView(Activity activity) {
+        EditText numberInput = new EditText(activity);
         numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         numberInput.setHint("Enter number here.");
         return numberInput;

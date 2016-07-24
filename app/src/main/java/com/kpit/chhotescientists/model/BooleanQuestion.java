@@ -1,5 +1,6 @@
 package com.kpit.chhotescientists.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.view.View;
@@ -18,8 +19,8 @@ public class BooleanQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Context context) {
-        return new ToggleButton(context);
+    public View getQuestionView(Activity activity) {
+        return new ToggleButton(activity);
     }
 
     @Override
