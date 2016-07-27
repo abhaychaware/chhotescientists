@@ -26,6 +26,7 @@ import com.kpit.chhotescientists.external.RuntimeTypeAdapterFactory;
 import com.kpit.chhotescientists.model.BooleanQuestion;
 import com.kpit.chhotescientists.model.NumberQuestion;
 import com.kpit.chhotescientists.model.CheckInQuestion;
+import com.kpit.chhotescientists.model.PhotoUploadQuestion;
 import com.kpit.chhotescientists.model.StarRatingQuestion;
 import com.kpit.chhotescientists.model.Session;
 import com.kpit.chhotescientists.util.AppController;
@@ -85,7 +86,7 @@ public class SessionFragment extends Fragment implements
     }
 
     private void loadData() {
-        String JSON_URL_TEMPORARY = "https://gist.githubusercontent.com/grahamearley/50acbec5adf235303222da123189149b/raw/cf0859bb4a603415d21b2facae773be290bb53ea/chhote_scientists_demo_data.json";
+        String JSON_URL_TEMPORARY = "https://gist.githubusercontent.com/grahamearley/50acbec5adf235303222da123189149b/raw/941d26445ee41a459ba349398f06ecc9a56ee07e/chhote_scientists_demo_data.json";
         // Request data from Volley
         JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, JSON_URL_TEMPORARY, null, new Response.Listener<JSONObject>() {
             @Override
@@ -116,6 +117,7 @@ public class SessionFragment extends Fragment implements
                 .of(CheckInQuestion.class, "question_type")
                 .registerSubtype(BooleanQuestion.class, "boolean")
                 .registerSubtype(StarRatingQuestion.class, "star_rating")
+                .registerSubtype(PhotoUploadQuestion.class, "photo_upload")
                 .registerSubtype(NumberQuestion.class, "number");
 
         ArrayList<Session> sessions = new ArrayList<>();
