@@ -1,16 +1,18 @@
 package com.kpit.chhotescientists.model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+
+import com.kpit.chhotescientists.interfaces.ViewResultReceiver;
 
 /**
  * Created by grahamearley on 7/16/16.
  */
 public abstract class CheckInQuestion implements Parcelable {
     public String question;
+    protected ViewResultReceiver viewResultReceiver;
 
     public CheckInQuestion(String question) {
         this.question = question;
@@ -34,5 +36,9 @@ public abstract class CheckInQuestion implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public void setViewResultReceiver(ViewResultReceiver viewResultReceiver) {
+        this.viewResultReceiver = viewResultReceiver;
     }
 }
