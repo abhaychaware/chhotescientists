@@ -3,13 +3,17 @@ package com.kpit.chhotescientists.model.result_views;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 
 import com.kpit.chhotescientists.view.MediaButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /**
  * Created by grahamearley on 7/31/16.
@@ -17,6 +21,7 @@ import java.io.InputStream;
 public class ResultMediaButtonContainer extends ResultViewContainer {
 
     private MediaButton mediaButton;
+    private String bitmapBase64;
 
     public ResultMediaButtonContainer(MediaButton mediaButton) {
         this.mediaButton = mediaButton;
@@ -24,8 +29,8 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     @Override
     public String getResult() {
-        if (mediaButton.getMediaFileStream() != null) {
-            return mediaButton.getMediaFileStream().toString();
+        if (bitmapBase64 != null) {
+            return bitmapBase64;
         } else {
             return "";
         }
@@ -36,12 +41,19 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
         return this.mediaButton;
     }
 
-    public void setImageWithFile(Bitmap imageBitmap, InputStream fileInputStream) {
+    public void setImageWithFile(Bitmap imageBitmap) {
         this.mediaButton.setImageBitmap(imageBitmap);
-        this.mediaButton.setMediaFileStream(fileInputStream);
+        this.bitmapBase64 = this.bitmapToBase64(imageBitmap);
     }
 
     public void setMediaButtonOnClick(View.OnClickListener onClickListener) {
         this.mediaButton.setButtonOnClickListener(onClickListener);
+    }
+
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }

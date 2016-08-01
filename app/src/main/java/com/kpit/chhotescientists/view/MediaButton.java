@@ -19,12 +19,11 @@ public class MediaButton extends LinearLayout {
 
     private Button button;
     private ImageView imageView;
-    private InputStream mediaFileStream;
 
     public MediaButton(Context context) {
         super(context);
         button = new Button(context);
-        button.setText("Choose file");
+        button.setText("Add file");
 
         imageView = new ImageView(context);
 
@@ -51,13 +50,5 @@ public class MediaButton extends LinearLayout {
 
     public void setImageBitmap(Bitmap imageBitmap) {
         this.imageView.setImageBitmap(imageBitmap);
-    }
-
-    public void setMediaFileStream(InputStream mediaFileStream) {
-        this.mediaFileStream = mediaFileStream;
-    }
-
-    public InputStream getMediaFileStream() {
-        return mediaFileStream;
     }
 }

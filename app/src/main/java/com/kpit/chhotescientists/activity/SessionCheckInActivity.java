@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import com.kpit.chhotescientists.model.SessionEvent;
 import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -83,10 +85,8 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
-                InputStream fileInputStream= this.getContentResolver().openInputStream(uri);
-
                 if (this.mediaButtonContainerAwaitingResult != null) {
-                    this.mediaButtonContainerAwaitingResult.setImageWithFile(bitmap, fileInputStream);
+                    this.mediaButtonContainerAwaitingResult.setImageWithFile(bitmap);
                     this.mediaButtonContainerAwaitingResult = null;
                 }
 
