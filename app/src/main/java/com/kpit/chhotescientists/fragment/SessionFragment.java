@@ -2,6 +2,8 @@ package com.kpit.chhotescientists.fragment;
 
 
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.kpit.chhotescientists.R;
+import com.kpit.chhotescientists.activity.MainActivity;
 import com.kpit.chhotescientists.adapter.SessionAdapter;
 import com.kpit.chhotescientists.external.RuntimeTypeAdapterFactory;
 import com.kpit.chhotescientists.model.BooleanQuestion;
@@ -29,12 +33,30 @@ import com.kpit.chhotescientists.model.CheckInQuestion;
 import com.kpit.chhotescientists.model.PhotoUploadQuestion;
 import com.kpit.chhotescientists.model.StarRatingQuestion;
 import com.kpit.chhotescientists.model.Session;
+import com.kpit.chhotescientists.model.VideoUploadQuestion;
 import com.kpit.chhotescientists.util.AppController;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class SessionFragment extends Fragment implements
@@ -86,7 +108,7 @@ public class SessionFragment extends Fragment implements
     }
 
     private void loadData() {
-        String JSON_URL_TEMPORARY = "https://gist.githubusercontent.com/grahamearley/50acbec5adf235303222da123189149b/raw/941d26445ee41a459ba349398f06ecc9a56ee07e/chhote_scientists_demo_data.json";
+        String JSON_URL_TEMPORARY = "https://gist.githubusercontent.com/grahamearley/cae5c0934e0d385a4cf6c2749b1af132/raw/1ae7b4a1b1f9b3ccf7d56fe02cfc2e1290af664a/chhote_events_dummy.json";
         // Request data from Volley
         JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, JSON_URL_TEMPORARY, null, new Response.Listener<JSONObject>() {
             @Override
@@ -117,7 +139,8 @@ public class SessionFragment extends Fragment implements
                 .of(CheckInQuestion.class, "question_type")
                 .registerSubtype(BooleanQuestion.class, "boolean")
                 .registerSubtype(StarRatingQuestion.class, "star_rating")
-                .registerSubtype(PhotoUploadQuestion.class, "photo_upload")
+                .registerSubtype(PhotoUploadQuestion.class, "photo")
+                .registerSubtype(VideoUploadQuestion.class, "video") // todo: implement video type (right now it's a dupe of photo type)
                 .registerSubtype(NumberQuestion.class, "number");
 
         ArrayList<Session> sessions = new ArrayList<>();
@@ -132,6 +155,10 @@ public class SessionFragment extends Fragment implements
                     sessions.add(session);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (JsonParseException jsonParseException) {
+                    // Occurs if the response contains an unregistered subtype
+                    // todo: show error -- the response will not be complete!
+                    jsonParseException.printStackTrace();
                 }
             }
         }

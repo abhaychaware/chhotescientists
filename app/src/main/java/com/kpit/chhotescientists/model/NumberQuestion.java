@@ -7,6 +7,9 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
+import com.kpit.chhotescientists.model.result_views.ResultEditTextContainer;
+import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+
 /**
  * Created by grahamearley on 7/16/16.
  */
@@ -20,11 +23,11 @@ public class NumberQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Activity activity) {
+    public ResultViewContainer getQuestionViewContainer(Activity activity) {
         EditText numberInput = new EditText(activity);
         numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         numberInput.setHint("Enter number here.");
-        return numberInput;
+        return new ResultEditTextContainer(numberInput);
     }
 
     public static final Creator<NumberQuestion> CREATOR = new Creator<NumberQuestion>() {

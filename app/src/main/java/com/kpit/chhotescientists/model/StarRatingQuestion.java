@@ -6,6 +6,9 @@ import android.os.Parcel;
 import android.view.View;
 import android.widget.RatingBar;
 
+import com.kpit.chhotescientists.model.result_views.ResultStarRatingContainer;
+import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+
 /**
  * Created by grahamearley on 7/16/16.
  */
@@ -19,10 +22,10 @@ public class StarRatingQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Activity activity) {
+    public ResultViewContainer getQuestionViewContainer(Activity activity) {
         RatingBar ratingBar = new RatingBar(activity);
         ratingBar.setNumStars(5);
-        return ratingBar;
+        return new ResultStarRatingContainer(ratingBar);
     }
 
     public static final Creator<StarRatingQuestion> CREATOR = new Creator<StarRatingQuestion>() {

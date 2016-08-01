@@ -6,6 +6,9 @@ import android.os.Parcel;
 import android.view.View;
 import android.widget.ToggleButton;
 
+import com.kpit.chhotescientists.model.result_views.ResultToggleButtonContainer;
+import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+
 /**
  * Created by grahamearley on 7/16/16.
  */
@@ -19,8 +22,9 @@ public class BooleanQuestion extends CheckInQuestion {
     }
 
     @Override
-    public View getQuestionView(Activity activity) {
-        return new ToggleButton(activity);
+    public ResultViewContainer getQuestionViewContainer(Activity activity) {
+        ToggleButton toggleButton = new ToggleButton(activity);
+        return new ResultToggleButtonContainer(toggleButton);
     }
 
     @Override

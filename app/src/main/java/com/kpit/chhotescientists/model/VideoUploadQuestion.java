@@ -3,7 +3,6 @@ package com.kpit.chhotescientists.model;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Parcel;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,17 +14,18 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 import com.kpit.chhotescientists.view.MediaButton;
 
 /**
- * Created by grahamearley on 7/24/16.
+ * Created by grahamearley on 7/31/16.
  */
-public class PhotoUploadQuestion extends CheckInQuestion {
-    public PhotoUploadQuestion(String question) {
+public class VideoUploadQuestion extends CheckInQuestion {
+    public VideoUploadQuestion(String question) {
         super(question);
     }
 
-    public PhotoUploadQuestion(Parcel in) {
+    public VideoUploadQuestion(Parcel in) {
         super(in);
     }
 
+    // TODO: MAKE THIS NOT BE PHOTOS!! this is a direct copy-paste  for now.
     @Override
     public ResultViewContainer getQuestionViewContainer(final Activity activity) {
         final MediaButton mediaButton = new MediaButton(activity);
@@ -54,15 +54,15 @@ public class PhotoUploadQuestion extends CheckInQuestion {
         return resultMediaButtonContainer;
     }
 
-    public static final Creator<PhotoUploadQuestion> CREATOR = new Creator<PhotoUploadQuestion>() {
+    public static final Creator<VideoUploadQuestion> CREATOR = new Creator<VideoUploadQuestion>() {
         @Override
-        public PhotoUploadQuestion createFromParcel(Parcel in) {
-            return new PhotoUploadQuestion(in);
+        public VideoUploadQuestion createFromParcel(Parcel in) {
+            return new VideoUploadQuestion(in);
         }
 
         @Override
-        public PhotoUploadQuestion[] newArray(int size) {
-            return new PhotoUploadQuestion[size];
+        public VideoUploadQuestion[] newArray(int size) {
+            return new VideoUploadQuestion[size];
         }
     };
 }

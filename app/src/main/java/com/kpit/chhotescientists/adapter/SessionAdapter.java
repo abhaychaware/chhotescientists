@@ -26,6 +26,8 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     List<Session> items;
     Context context;
 
+
+
     public SessionAdapter(List<Session> items, Context context) {
         this.items = items;
         this.context = context;
