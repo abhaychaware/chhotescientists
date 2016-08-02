@@ -77,4 +77,23 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
         return dataToSend;
     }
+
+    @Override
+    public JSONObject getMediaJsonToUpload(String eventTypeId, String scheduleId) throws JSONException {
+        JSONObject dataObject = new JSONObject();
+        dataObject.put("event_type_id", eventTypeId);
+        dataObject.put("schedule_id", scheduleId);
+
+        dataObject.put("media_type", "photo"); // TODO videos...
+
+        dataObject.put("filebindata", getResult());
+
+        JSONArray dataWrapper = new JSONArray();
+        dataWrapper.put(dataObject);
+
+        JSONObject resultWrapper = new JSONObject();
+        resultWrapper.put("data", resultWrapper);
+
+        return resultWrapper;
+    }
 }

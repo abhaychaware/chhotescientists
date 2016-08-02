@@ -28,6 +28,11 @@ public abstract class ResultViewContainer {
         return dataToSend;
     }
 
+    public JSONObject getMediaJsonToUpload(String eventTypeId, String scheduleId) throws JSONException {
+        // By default, don't upload any media. Media classes will override this.
+        return null;
+    }
+
     public void setQuestion(CheckInQuestion question) {
         this.question = question;
     }

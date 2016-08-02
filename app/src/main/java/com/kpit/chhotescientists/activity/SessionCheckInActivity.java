@@ -69,35 +69,13 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONArray questionsTextArray = new JSONArray();
-
                 try {
-                    for (ResultViewContainer container : viewContainers) {
-                        questionsTextArray = container.addContentsToTextJsonArray(questionsTextArray);
-                        Log.d("GRAHAM", container.getResult());
-                    }
+                    // Upload text responses to questions:
+                    JSONObject questionsTextJson = assembleTextJson(event);
+                    Log.d("Text Response", questionsTextJson.toString());
 
-                    // This nested structure is based on the endpoint spec.
-                    //   Could probably use optimization at some point. TODO
-                    JSONObject textDataToSend = new JSONObject();
-                    JSONArray dataJsonArray = new JSONArray();
-                    JSONObject sessionJson = new JSONObject();
-
-                    JSONObject eventJson = new JSONObject();
-                    eventJson.put("event_type_id", event.getId());
-                    eventJson.put("title", event.getTitle());
-                    eventJson.put("questions", questionsTextArray);
-
-                    JSONArray eventWrapperJson = new JSONArray();
-                    eventWrapperJson.put(eventJson);
-
-                    sessionJson.put("schedule_id", "TODO: IMPLEMENT THIS!");
-                    sessionJson.put("events", eventWrapperJson);
-
-                    dataJsonArray.put(sessionJson);
-                    textDataToSend.put("data", dataJsonArray);
-
-                    Log.d("Graham!", textDataToSend.toString());
+                    // Also upload any media if possible
+                    uploadMediaResponses(event);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -105,6 +83,45 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         });
 
         questionsLayout.addView(submitButton);
+    }
+
+    private void uploadMediaResponses(SessionEvent event) throws JSONException {
+        for (ResultViewContainer container : viewContainers) {
+            JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), "SCHED ID");
+            if (mediaJsonToSend != null) {
+                // send it.
+            }
+        }
+    }
+
+    private JSONObject assembleTextJson(SessionEvent event) throws JSONException {
+        JSONArray questionsTextArray = new JSONArray();
+
+        for (ResultViewContainer container : viewContainers) {
+            questionsTextArray = container.addContentsToTextJsonArray(questionsTextArray);
+        }
+
+        // This nested structure is based on the endpoint spec.
+        //   Could probably use optimization at some point. TODO
+        JSONObject textDataToSend = new JSONObject();
+        JSONArray dataJsonArray = new JSONArray();
+        JSONObject sessionJson = new JSONObject();
+
+        JSONObject eventJson = new JSONObject();
+        eventJson.put("event_type_id", event.getId());
+        eventJson.put("title", event.getTitle());
+        eventJson.put("questions", questionsTextArray);
+
+        JSONArray eventWrapperJson = new JSONArray();
+        eventWrapperJson.put(eventJson);
+
+        sessionJson.put("schedule_id", "TODO: IMPLEMENT THIS!");
+        sessionJson.put("events", eventWrapperJson);
+
+        dataJsonArray.put(sessionJson);
+        textDataToSend.put("data", dataJsonArray);
+
+        return textDataToSend;
     }
 
     @Override
