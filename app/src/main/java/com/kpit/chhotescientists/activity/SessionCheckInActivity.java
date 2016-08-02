@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +19,11 @@ import com.kpit.chhotescientists.model.SessionEvent;
 import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 
-import java.io.ByteArrayOutputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +41,11 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_check_in);
 
-        SessionEvent event = getIntent().getParcelableExtra(EVENT_KEY);
+        final SessionEvent event = getIntent().getParcelableExtra(EVENT_KEY);
 
         viewContainers = new ArrayList<>();
 
-        LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.check_in_questions_layout);
+        final LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.check_in_questions_layout);
 
         for (CheckInQuestion question : event.questions) {
             TextView questionTextView = new TextView(this);
@@ -52,6 +53,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
             questionsLayout.addView(questionTextView);
 
             ResultViewContainer viewContainer = question.getQuestionViewContainer(this);
+            viewContainer.setQuestion(question);
 
             // Set this activity as the question's ResultViewContainerReceiver,
             //  so the question's view can send a view to this activity to be
@@ -67,8 +69,37 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (ResultViewContainer container : viewContainers) {
-                    Log.d("GRAHAM", container.getResult());
+                JSONArray questionsTextArray = new JSONArray();
+
+                try {
+                    for (ResultViewContainer container : viewContainers) {
+                        questionsTextArray = container.addContentsToTextJsonArray(questionsTextArray);
+                        Log.d("GRAHAM", container.getResult());
+                    }
+
+                    // This nested structure is based on the endpoint spec.
+                    //   Could probably use optimization at some point. TODO
+                    JSONObject textDataToSend = new JSONObject();
+                    JSONArray dataJsonArray = new JSONArray();
+                    JSONObject sessionJson = new JSONObject();
+
+                    JSONObject eventJson = new JSONObject();
+                    eventJson.put("event_type_id", event.getId());
+                    eventJson.put("title", event.getTitle());
+                    eventJson.put("questions", questionsTextArray);
+
+                    JSONArray eventWrapperJson = new JSONArray();
+                    eventWrapperJson.put(eventJson);
+
+                    sessionJson.put("schedule_id", "TODO: IMPLEMENT THIS!");
+                    sessionJson.put("events", eventWrapperJson);
+
+                    dataJsonArray.put(sessionJson);
+                    textDataToSend.put("data", dataJsonArray);
+
+                    Log.d("Graham!", textDataToSend.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });

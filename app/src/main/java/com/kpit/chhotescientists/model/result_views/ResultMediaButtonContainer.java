@@ -8,6 +8,10 @@ import android.view.View;
 
 import com.kpit.chhotescientists.view.MediaButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,5 +59,22 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    @Override
+    public JSONArray addContentsToTextJsonArray(JSONArray dataToSend) throws JSONException {
+        JSONObject viewContentsJson = getBaseJsonDataToSend();
+
+        // Don't send actual media data here, just send whether it exists.
+        //  Media is sent to a different endpoint.
+        if (bitmapBase64 != null) {
+            viewContentsJson.put("response", "Yes");
+        } else {
+            viewContentsJson.put("response", "No");
+        }
+
+        dataToSend.put(viewContentsJson);
+
+        return dataToSend;
     }
 }

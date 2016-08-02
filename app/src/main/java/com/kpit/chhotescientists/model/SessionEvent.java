@@ -3,6 +3,8 @@ package com.kpit.chhotescientists.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,9 @@ import java.util.List;
 public class SessionEvent implements Parcelable {
     public String title;
     public List<CheckInQuestion> questions;
+
+    @SerializedName("event_type_id")
+    String eventTypeId;
 
     protected SessionEvent(Parcel in) {
         title = in.readString();
@@ -43,4 +48,12 @@ public class SessionEvent implements Parcelable {
             return new SessionEvent[size];
         }
     };
+
+    public String getId() {
+        return eventTypeId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

@@ -3,6 +3,10 @@ package com.kpit.chhotescientists.model.result_views;
 import android.view.View;
 import android.widget.ToggleButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by grahamearley on 7/31/16.
  */
