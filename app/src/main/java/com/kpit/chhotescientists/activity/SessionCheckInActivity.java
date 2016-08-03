@@ -100,13 +100,13 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("GRAHAMLOG", response.toString());
+                        Log.d("GRAHAMLOG",  "TEXT UPLOAD: " + response.toString());
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("GRAHAMLOG", error.toString());
+                        Log.d("GRAHAMLOG", "TEXT UPLOAD: " + error.toString());
                     }
                 });
 
@@ -119,13 +119,13 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("GRAHAMLOG", response.toString());
+                        Log.d("GRAHAMLOG", "MEDIA UPLOAD: " + response.toString());
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("GRAHAMLOG", error.toString());
+                Log.d("GRAHAMLOG", "MEDIA UPLOAD: " + error.toString());
             }
         });
 
@@ -136,8 +136,8 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         for (ResultViewContainer container : viewContainers) {
             JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), "SCHED ID.. todo: implement!");
             if (mediaJsonToSend != null) {
-                // Send the media file(s) // TODO: Fix crash upon upload!
-//                uploadMediaResponse(mediaJsonToSend);
+                // Send the media file(s)
+                uploadMediaResponse(mediaJsonToSend);
             }
         }
     }

@@ -80,6 +80,11 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     @Override
     public JSONObject getMediaJsonToUpload(String eventTypeId, String scheduleId) throws JSONException {
+
+        if (getResult().equals("")) {
+            return null;
+        }
+
         JSONObject dataObject = new JSONObject();
         dataObject.put("event_type_id", eventTypeId);
         dataObject.put("schedule_id", scheduleId);
@@ -92,7 +97,7 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
         dataWrapper.put(dataObject);
 
         JSONObject resultWrapper = new JSONObject();
-        resultWrapper.put("data", resultWrapper);
+        resultWrapper.put("data", dataWrapper);
 
         return resultWrapper;
     }
