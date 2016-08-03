@@ -15,6 +15,7 @@ public class SessionEvent implements Parcelable {
     public String title;
     public List<CheckInQuestion> questions;
     public String eventTypeId;
+    private String scheduleId;
 
     protected SessionEvent(Parcel in) {
         title = in.readString();
@@ -55,5 +56,13 @@ public class SessionEvent implements Parcelable {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public String getScheduleId() {
+        return this.scheduleId;
     }
 }

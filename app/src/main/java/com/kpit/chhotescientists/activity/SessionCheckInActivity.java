@@ -134,7 +134,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
 
     private void uploadMediaResponses(SessionEvent event) throws JSONException {
         for (ResultViewContainer container : viewContainers) {
-            JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), "SCHED ID.. todo: implement!");
+            JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), event.getScheduleId());
             if (mediaJsonToSend != null) {
                 // Send the media file(s)
                 uploadMediaResponse(mediaJsonToSend);
@@ -163,7 +163,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         JSONArray eventWrapperJson = new JSONArray();
         eventWrapperJson.put(eventJson);
 
-        sessionJson.put("schedule_id", "TODO: IMPLEMENT THIS!");
+        sessionJson.put("schedule_id", event.getScheduleId());
         sessionJson.put("events", eventWrapperJson);
 
         dataJsonArray.put(sessionJson);

@@ -155,6 +155,10 @@ public class SessionFragment extends Fragment implements
                 try {
                     JSONObject sessionObject = sessionArray.getJSONObject(i);
                     Session session = gson.fromJson(sessionObject.toString(), Session.class);
+
+                    // Make sure a session's events know their parent session's ID:
+                    session.passScheduleIdToEvents();
+
                     sessions.add(session);
                 } catch (JSONException e) {
                     e.printStackTrace();

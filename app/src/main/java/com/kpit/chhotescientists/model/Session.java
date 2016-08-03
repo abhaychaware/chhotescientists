@@ -16,4 +16,12 @@ public class Session {
     public String theme;
     public String expectedStudentCount;
     public String scheduleId;
+
+    public void passScheduleIdToEvents() {
+        if (events != null) {
+            for (SessionEvent event : events) {
+                event.setScheduleId(scheduleId);
+            }
+        }
+    }
 }
