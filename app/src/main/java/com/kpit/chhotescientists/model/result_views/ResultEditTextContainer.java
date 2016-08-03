@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by grahamearley on 7/31/16.
+ * See parent class ResultViewContainer for documentation.
  */
 public class ResultEditTextContainer extends ResultViewContainer {
 

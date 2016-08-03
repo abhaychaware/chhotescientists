@@ -20,7 +20,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
- * Created by grahamearley on 7/31/16.
+ * See parent class ResultViewContainer for documentation.
  */
 public class ResultMediaButtonContainer extends ResultViewContainer {
 

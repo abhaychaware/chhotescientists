@@ -10,7 +10,7 @@ import com.kpit.chhotescientists.model.result_views.ResultStarRatingContainer;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 
 /**
- * Created by grahamearley on 7/16/16.
+ * See parent CheckInQuestion for documentation.
  */
 public class StarRatingQuestion extends CheckInQuestion {
     public static final String QUESTION_TYPE = "star_rating";

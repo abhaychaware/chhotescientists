@@ -60,6 +60,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * The third tab in the main activity -- for displaying
+ *  a list of the user's Sessions/Schedules.
+ */
 public class SessionFragment extends Fragment implements
         SwipeRefreshLayout.OnRefreshListener {
 
@@ -78,8 +82,7 @@ public class SessionFragment extends Fragment implements
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_session, container, false);
 
-        //listView = (ListView) v.findViewById(R.id.listView);
-        progressBar = (ProgressBar) v.findViewById(R.id.progressBar2);
+        progressBar = v.findViewById(R.id.progressBar2);
         loadErrorTextView = (TextView) v.findViewById(R.id.load_error_text_view);
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.check_in_swipe_container);
         swipeLayout.setOnRefreshListener(this);
@@ -110,32 +113,48 @@ public class SessionFragment extends Fragment implements
 
     private void loadData() {
         String JSON_URL_TEMPORARY = "https://gist.githubusercontent.com/grahamearley/cae5c0934e0d385a4cf6c2749b1af132/raw/1ae7b4a1b1f9b3ccf7d56fe02cfc2e1290af664a/chhote_events_dummy.json";
-        // Request data from Volley
-        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, JSON_URL_TEMPORARY, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                // VolleyLog.d(TAG,
-                // "Response: " + response.toString());
-                if (response != null) {
-                    parseEventsJsonIntoAdapter(response);
-                }
-            }
-        }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO: handle errors
-                Toast.makeText(getContext(), "Whoops!", Toast.LENGTH_LONG).show();
-            }
+        // Make request params JSON object:
+        JSONObject dataObject = new JSONObject();
+        try {
+            // TODO: simplify this nested JSON structure?
+            JSONObject parameterObject = new JSONObject();
+            parameterObject.put("teacher_id", "3"); // TODO: Get access to the teacher's ID! De-hardcode!
+            JSONArray dataArray = new JSONArray();
+            dataArray.put(parameterObject);
+            dataObject.put("data", dataArray);
+            Log.d("SessionFragment", "Requesting schedule with this data: " + dataObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // TODO: implement endpoint...
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(
+                Request.Method.GET, JSON_URL_TEMPORARY, dataObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (response != null) {
+                            parseEventsJsonIntoAdapter(response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: handle errors
+                        Log.d("SessionFragment", "Error with schedules: " + error.toString());
+                        Toast.makeText(getContext(), "Sorry! There was an error getting the schedules.", Toast.LENGTH_LONG).show();
+                    }
         });
 
-        // Adding request to volley request queue
-        AppController.getInstance().addToRequestQueue(jsonReq);
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     private void parseEventsJsonIntoAdapter(JSONObject response) {
         Log.d("SessionFragment:", "Parsing response: " + response.toString());
 
+        // Set up a RunTimeTypeAdapter, which will decide what subclass of CheckInQuestion the
+        //  object should be instantiated to (based on the "question_type" field):
         final RuntimeTypeAdapterFactory<CheckInQuestion> questionFactory = RuntimeTypeAdapterFactory
                 .of(CheckInQuestion.class, "question_type")
                 .registerSubtype(BooleanQuestion.class, BooleanQuestion.QUESTION_TYPE)
@@ -146,10 +165,12 @@ public class SessionFragment extends Fragment implements
 
         ArrayList<Session> sessions = new ArrayList<>();
         Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES) // map the server's variable_names to camelCase
                 .registerTypeAdapterFactory(questionFactory).create();
 
         JSONArray sessionArray = response.optJSONArray("data");
+
+        // Parse the sessions/schedules in the response:
         if (sessionArray != null) {
             for (int i = 0; i < sessionArray.length(); i++) {
                 try {

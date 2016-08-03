@@ -9,12 +9,15 @@ import com.kpit.chhotescientists.interfaces.ResultViewContainerReceiver;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 
 /**
- * Created by grahamearley on 7/16/16.
+ * A model to be constructed (with GSON) from the server response.
+ *  The model also contains a method for getting the question's
+ *  input view (such as an EditText or a photo upload button).
+ *
+ *  See subclasses!
  */
 public abstract class CheckInQuestion implements Parcelable {
     public String question;
     String questionId;
-    String questionType;
 
     protected ResultViewContainerReceiver viewResultReceiver;
 
@@ -25,7 +28,6 @@ public abstract class CheckInQuestion implements Parcelable {
     public CheckInQuestion(Parcel in) {
         question = in.readString();
         questionId = in.readString();
-        questionType = in.readString();
     }
 
     public abstract ResultViewContainer getQuestionViewContainer(Activity activity);
@@ -46,7 +48,6 @@ public abstract class CheckInQuestion implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.question);
         dest.writeString(this.questionId);
-        dest.writeString(this.questionType);
     }
 
     @Override

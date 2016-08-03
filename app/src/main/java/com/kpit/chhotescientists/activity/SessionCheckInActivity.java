@@ -31,9 +31,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SessionCheckInActivity extends AppCompatActivity implements ResultViewContainerReceiver {
 
@@ -55,6 +53,9 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
 
         final LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.check_in_questions_layout);
 
+        // Each Question in the Event has a view for accepting the user's input (e.g. an EditText or a Toggle).
+        //  Go through these Questions and add a TextView for the question's text, along with the Question's
+        //  input view.
         for (CheckInQuestion question : event.questions) {
             TextView questionTextView = new TextView(this);
             questionTextView.setText(question.getQuestionText());
@@ -67,6 +68,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
             //  so the question's view can send a view to this activity to be
             //  filled in by the activity upon receiving a result
             question.setViewResultReceiver(this);
+            // ^(used for users' media upload selections)
 
             viewContainers.add(viewContainer);
             questionsLayout.addView(viewContainer.getView());
@@ -94,6 +96,10 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         questionsLayout.addView(submitButton);
     }
 
+    /**
+     * Send the text-based question responses to the backend.
+     * @param questionsTextJson The JSON object of question responses.
+     */
     private void uploadTextResponses(JSONObject questionsTextJson) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(
                 Request.Method.POST, getString(R.string.upload_event_questionnaire), questionsTextJson,
@@ -113,6 +119,10 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Send a media-based question response to the backend.
+     * @param questionsMediaJson The JSON object of a media response.
+     */
     private void uploadMediaResponse(JSONObject questionsMediaJson) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(
                 Request.Method.POST, getString(R.string.upload_event_media), questionsMediaJson,
@@ -132,6 +142,12 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Send all media-based question responses to the backend. Each piece of media
+     *  is sent in a single response.
+     * @param event The Event containing the questions, some of which may have media responses.
+     * @throws JSONException if there is an issue with the JSON.
+     */
     private void uploadMediaResponses(SessionEvent event) throws JSONException {
         for (ResultViewContainer container : viewContainers) {
             JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), event.getScheduleId());
@@ -142,12 +158,23 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         }
     }
 
+    /**
+     * Go through all the Questions in an Event, and build a properly-formatted JSON object
+     *  based on the user's responses to these Questions.
+     * @param event The event containing the questions to gather answers from.
+     * @return A JSON object of all the questions' user responses, properly formatted for the backend.
+     * @throws JSONException if there's any error with the JSON object.
+     */
     private JSONObject assembleTextJson(SessionEvent event) throws JSONException {
+        // Create an empty JSON array, and build it up by passing it through
+        //  all questions' view containers and adding those view containers' results
+        //  to the array.
         JSONArray questionsTextArray = new JSONArray();
-
         for (ResultViewContainer container : viewContainers) {
             questionsTextArray = container.addContentsToTextJsonArray(questionsTextArray);
         }
+
+        // Now build the outer layers of the JSON:
 
         // This nested structure is based on the endpoint spec.
         //   Could probably use optimization at some point. TODO
@@ -176,11 +203,14 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Get an image from the chooser, and add it to the corresponding media button's ImageView
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
+                // If there is a mediaButtonContainer awaiting a result,
+                //  then put this result in that container's ImageView.
                 if (this.mediaButtonContainerAwaitingResult != null) {
                     this.mediaButtonContainerAwaitingResult.setImageWithFile(bitmap);
                     this.mediaButtonContainerAwaitingResult = null;
