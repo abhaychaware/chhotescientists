@@ -13,8 +13,13 @@
     <string name="send_contact_feedback">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_contactus.php</string>
     <string name="version_check">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/version_check.php</string>
 
+    <string name="get_schedules">http://52.86.101.47/user/user/get-schedules</string>
+
     <string name="send_feedback">http://cityfi.in/restapi/post_contactus.php</string>
     <string name="update_profile">http://cityfi.in/restapi/post_update_user_profile.php</string>
+
+    <string name="upload_event_questionnaire">http://52.86.101.47/user/user/save-event-info</string>
+    <string name="upload_event_media">http://52.86.101.47/user/user/save-event-image-video</string>
 
 
 </resources>
