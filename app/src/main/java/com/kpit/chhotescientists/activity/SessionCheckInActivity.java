@@ -113,11 +113,31 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    private void uploadMediaResponse(JSONObject questionsMediaJson) {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(
+                Request.Method.POST, getString(R.string.upload_event_media), questionsMediaJson,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("GRAHAMLOG", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("GRAHAMLOG", error.toString());
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
     private void uploadMediaResponses(SessionEvent event) throws JSONException {
         for (ResultViewContainer container : viewContainers) {
-            JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), "SCHED ID");
+            JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), "SCHED ID.. todo: implement!");
             if (mediaJsonToSend != null) {
-                // send it.
+                // Send the media file(s) // TODO: Fix crash upon upload!
+//                uploadMediaResponse(mediaJsonToSend);
             }
         }
     }
