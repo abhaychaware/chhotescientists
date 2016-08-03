@@ -14,9 +14,7 @@ import java.util.List;
 public class SessionEvent implements Parcelable {
     public String title;
     public List<CheckInQuestion> questions;
-
-    @SerializedName("event_type_id")
-    String eventTypeId;
+    public String eventTypeId;
 
     protected SessionEvent(Parcel in) {
         title = in.readString();
@@ -24,6 +22,7 @@ public class SessionEvent implements Parcelable {
 
         // Write the stored list to this.questions:
         in.readList(questions, CheckInQuestion.class.getClassLoader());
+        eventTypeId = in.readString();
     }
 
     @Override
@@ -35,6 +34,7 @@ public class SessionEvent implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeList(questions);
+        dest.writeString(eventTypeId);
     }
 
     public static final Creator<SessionEvent> CREATOR = new Creator<SessionEvent>() {

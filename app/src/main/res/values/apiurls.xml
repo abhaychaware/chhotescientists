@@ -18,5 +18,8 @@
     <string name="send_feedback">http://cityfi.in/restapi/post_contactus.php</string>
     <string name="update_profile">http://cityfi.in/restapi/post_update_user_profile.php</string>
 
+    <string name="upload_event_questionnaire">http://52.86.101.47/user/user/save-event-info</string>
+    <string name="upload_event_media">http://52.86.101.47/user/user/save-event-image-video</string>
+
 
 </resources>

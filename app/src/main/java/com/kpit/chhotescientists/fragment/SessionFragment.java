@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -137,14 +138,16 @@ public class SessionFragment extends Fragment implements
 
         final RuntimeTypeAdapterFactory<CheckInQuestion> questionFactory = RuntimeTypeAdapterFactory
                 .of(CheckInQuestion.class, "question_type")
-                .registerSubtype(BooleanQuestion.class, "boolean")
-                .registerSubtype(StarRatingQuestion.class, "star_rating")
-                .registerSubtype(PhotoUploadQuestion.class, "photo")
-                .registerSubtype(VideoUploadQuestion.class, "video") // todo: implement video type (right now it's a dupe of photo type)
-                .registerSubtype(NumberQuestion.class, "number");
+                .registerSubtype(BooleanQuestion.class, BooleanQuestion.QUESTION_TYPE)
+                .registerSubtype(StarRatingQuestion.class, StarRatingQuestion.QUESTION_TYPE)
+                .registerSubtype(PhotoUploadQuestion.class, PhotoUploadQuestion.QUESTION_TYPE)
+                .registerSubtype(VideoUploadQuestion.class, VideoUploadQuestion.QUESTION_TYPE) // todo: implement video type (right now it's a dupe of photo type)
+                .registerSubtype(NumberQuestion.class, NumberQuestion.QUESTION_TYPE);
 
         ArrayList<Session> sessions = new ArrayList<>();
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(questionFactory).create();
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapterFactory(questionFactory).create();
 
         JSONArray sessionArray = response.optJSONArray("data");
         if (sessionArray != null) {

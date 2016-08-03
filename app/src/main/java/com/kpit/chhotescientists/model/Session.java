@@ -13,11 +13,7 @@ public class Session {
     public String date;
     public String location;
     public List<SessionEvent> events;
-    String theme;
-
-    @SerializedName("expected_student_count")
-    String expectedStudentCount;
-
-    @SerializedName("schedule_id")
-    String scheduleId;
+    public String theme;
+    public String expectedStudentCount;
+    public String scheduleId;
 }

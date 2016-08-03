@@ -12,14 +12,10 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
  * Created by grahamearley on 7/16/16.
  */
 public abstract class CheckInQuestion implements Parcelable {
-
-    @SerializedName("question_id")
+    public String question;
     String questionId;
-
-    @SerializedName("question_type")
     String questionType;
 
-    public String question;
     protected ResultViewContainerReceiver viewResultReceiver;
 
     public CheckInQuestion(String question) {
@@ -27,7 +23,9 @@ public abstract class CheckInQuestion implements Parcelable {
     }
 
     public CheckInQuestion(Parcel in) {
-        this(in.readString());
+        question = in.readString();
+        questionId = in.readString();
+        questionType = in.readString();
     }
 
     public abstract ResultViewContainer getQuestionViewContainer(Activity activity);
@@ -47,6 +45,8 @@ public abstract class CheckInQuestion implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.question);
+        dest.writeString(this.questionId);
+        dest.writeString(this.questionType);
     }
 
     @Override
@@ -58,7 +58,5 @@ public abstract class CheckInQuestion implements Parcelable {
         this.viewResultReceiver = viewResultReceiver;
     }
 
-    public String getQuestionType() {
-        return questionType;
-    }
+    public abstract String getQuestionType();
 }

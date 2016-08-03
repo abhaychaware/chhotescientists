@@ -13,6 +13,7 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
  * Created by grahamearley on 7/16/16.
  */
 public class TextQuestion extends CheckInQuestion {
+    public static final String QUESTION_TYPE = "text";
 
     public TextQuestion(String question) {
         super(question);
@@ -26,6 +27,11 @@ public class TextQuestion extends CheckInQuestion {
     public ResultViewContainer getQuestionViewContainer(Activity activity) {
         EditText editText = new EditText(activity);
         return new ResultEditTextContainer(editText);
+    }
+
+    @Override
+    public String getQuestionType() {
+        return QUESTION_TYPE;
     }
 
     public static final Creator<TextQuestion> CREATOR = new Creator<TextQuestion>() {

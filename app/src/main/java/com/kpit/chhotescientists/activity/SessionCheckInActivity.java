@@ -12,12 +12,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.interfaces.ResultViewContainerReceiver;
 import com.kpit.chhotescientists.model.CheckInQuestion;
 import com.kpit.chhotescientists.model.SessionEvent;
 import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+import com.kpit.chhotescientists.util.AppController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +31,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SessionCheckInActivity extends AppCompatActivity implements ResultViewContainerReceiver {
 
@@ -73,6 +81,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                     // Upload text responses to questions:
                     JSONObject questionsTextJson = assembleTextJson(event);
                     Log.d("Text Response", questionsTextJson.toString());
+                    uploadTextResponses(questionsTextJson);
 
                     // Also upload any media if possible
                     uploadMediaResponses(event);
@@ -83,6 +92,25 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         });
 
         questionsLayout.addView(submitButton);
+    }
+
+    private void uploadTextResponses(JSONObject questionsTextJson) {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(
+                Request.Method.POST, getString(R.string.upload_event_questionnaire), questionsTextJson,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("GRAHAMLOG", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("GRAHAMLOG", error.toString());
+                    }
+                });
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     private void uploadMediaResponses(SessionEvent event) throws JSONException {

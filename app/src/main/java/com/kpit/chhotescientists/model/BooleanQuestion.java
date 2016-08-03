@@ -13,12 +13,14 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
  * Created by grahamearley on 7/16/16.
  */
 public class BooleanQuestion extends CheckInQuestion {
+    public static final String QUESTION_TYPE = "boolean";
+
     public BooleanQuestion(String question) {
         super(question);
     }
 
     public BooleanQuestion(Parcel in) {
-        super(in.readString());
+        super(in);
     }
 
     @Override
@@ -33,8 +35,8 @@ public class BooleanQuestion extends CheckInQuestion {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.question);
+    public String getQuestionType() {
+        return QUESTION_TYPE;
     }
 
     public static final Creator<BooleanQuestion> CREATOR = new Creator<BooleanQuestion>() {

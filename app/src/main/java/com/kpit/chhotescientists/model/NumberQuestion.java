@@ -14,6 +14,8 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
  * Created by grahamearley on 7/16/16.
  */
 public class NumberQuestion extends CheckInQuestion {
+    public static final String QUESTION_TYPE = "number";
+
     public NumberQuestion(String question) {
         super(question);
     }
@@ -28,6 +30,11 @@ public class NumberQuestion extends CheckInQuestion {
         numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         numberInput.setHint("Enter number here.");
         return new ResultEditTextContainer(numberInput);
+    }
+
+    @Override
+    public String getQuestionType() {
+        return QUESTION_TYPE;
     }
 
     public static final Creator<NumberQuestion> CREATOR = new Creator<NumberQuestion>() {

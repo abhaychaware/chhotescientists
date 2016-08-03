@@ -18,6 +18,8 @@ import com.kpit.chhotescientists.view.MediaButton;
  * Created by grahamearley on 7/24/16.
  */
 public class PhotoUploadQuestion extends CheckInQuestion {
+    public static final String QUESTION_TYPE = "photo";
+
     public PhotoUploadQuestion(String question) {
         super(question);
     }
@@ -52,6 +54,11 @@ public class PhotoUploadQuestion extends CheckInQuestion {
         });
 
         return resultMediaButtonContainer;
+    }
+
+    @Override
+    public String getQuestionType() {
+        return QUESTION_TYPE;
     }
 
     public static final Creator<PhotoUploadQuestion> CREATOR = new Creator<PhotoUploadQuestion>() {

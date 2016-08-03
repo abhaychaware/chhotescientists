@@ -13,6 +13,8 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
  * Created by grahamearley on 7/16/16.
  */
 public class StarRatingQuestion extends CheckInQuestion {
+    public static final String QUESTION_TYPE = "star_rating";
+
     public StarRatingQuestion(String question) {
         super(question);
     }
@@ -26,6 +28,11 @@ public class StarRatingQuestion extends CheckInQuestion {
         RatingBar ratingBar = new RatingBar(activity);
         ratingBar.setNumStars(5);
         return new ResultStarRatingContainer(ratingBar);
+    }
+
+    @Override
+    public String getQuestionType() {
+        return QUESTION_TYPE;
     }
 
     public static final Creator<StarRatingQuestion> CREATOR = new Creator<StarRatingQuestion>() {
