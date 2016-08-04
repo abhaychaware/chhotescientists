@@ -124,6 +124,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
      * @param questionsMediaJson The JSON object of a media response.
      */
     private void uploadMediaResponse(JSONObject questionsMediaJson) {
+        Log.d("SessionCheckInActivity", "Uploading media JSON: " + questionsMediaJson.toString());
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(
                 Request.Method.POST, getString(R.string.upload_event_media), questionsMediaJson,
                 new Response.Listener<JSONObject>() {

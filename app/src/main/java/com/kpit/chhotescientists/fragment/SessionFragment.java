@@ -108,18 +108,17 @@ public class SessionFragment extends Fragment implements
 
     @Override
     public void onRefresh() {
+        Log.d("SessionFragment", "Swiped to refresh!");
         loadData();
     }
 
     private void loadData() {
-        String JSON_URL_TEMPORARY = "https://gist.githubusercontent.com/grahamearley/cae5c0934e0d385a4cf6c2749b1af132/raw/1ae7b4a1b1f9b3ccf7d56fe02cfc2e1290af664a/chhote_events_dummy.json";
-
         // Make request params JSON object:
         JSONObject dataObject = new JSONObject();
         try {
-            // TODO: simplify this nested JSON structure?
             JSONObject parameterObject = new JSONObject();
-            parameterObject.put("teacher_id", "3"); // TODO: Get access to the teacher's ID! De-hardcode!
+            parameterObject.put("user_id", "3"); // TODO: Get access to the teacher's ID! De-hardcode!
+            // todo: this comes from the login response with the new endpoint
             JSONArray dataArray = new JSONArray();
             dataArray.put(parameterObject);
             dataObject.put("data", dataArray);
@@ -128,9 +127,8 @@ public class SessionFragment extends Fragment implements
             e.printStackTrace();
         }
 
-        // TODO: implement endpoint...
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(
-                Request.Method.GET, JSON_URL_TEMPORARY, dataObject,
+                Request.Method.POST, getString(R.string.get_schedules), dataObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -141,7 +139,7 @@ public class SessionFragment extends Fragment implements
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: handle errors
+                        // TODO: handle errors more gracefully.
                         Log.d("SessionFragment", "Error with schedules: " + error.toString());
                         Toast.makeText(getContext(), "Sorry! There was an error getting the schedules.", Toast.LENGTH_LONG).show();
                     }
