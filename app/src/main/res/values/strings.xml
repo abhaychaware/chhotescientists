@@ -16,5 +16,9 @@
     <string name="view_calender">View My Calender</string>
     <!-- notification msgs-->
     <string name="notify_welcome">Welcome to Chhote Scientists</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="submit">Submit</string>
+    <string name="session_questionnaire">Session Questionnaire</string>
 
 </resources>

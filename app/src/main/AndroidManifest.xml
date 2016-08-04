@@ -95,7 +95,9 @@
             android:label="@string/play_video"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".activity.SessionCheckInActivity"></activity>
+        <activity android:name=".activity.SessionCheckInActivity"
+            android:label="@string/session_questionnaire"
+            android:parentActivityName=".activity.MainActivity"/>
     </application>
 
 </manifest>

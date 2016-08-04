@@ -27,6 +27,7 @@ public class StarRatingQuestion extends CheckInQuestion {
     public ResultViewContainer getQuestionViewContainer(Activity activity) {
         RatingBar ratingBar = new RatingBar(activity);
         ratingBar.setNumStars(5);
+        ratingBar.setStepSize(1);
         return new ResultStarRatingContainer(ratingBar);
     }
 

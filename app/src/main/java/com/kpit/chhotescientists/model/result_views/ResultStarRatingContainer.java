@@ -20,7 +20,7 @@ public class ResultStarRatingContainer extends ResultViewContainer {
 
     @Override
     public String getResult() {
-        return Integer.toString(ratingBar.getNumStars());
+        return Integer.toString((int) ratingBar.getRating());
     }
 
     public View getView() {

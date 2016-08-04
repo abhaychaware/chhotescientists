@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -59,7 +60,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         for (CheckInQuestion question : event.questions) {
             TextView questionTextView = new TextView(this);
             questionTextView.setText(question.getQuestionText());
-            questionsLayout.addView(questionTextView);
+            questionsLayout.addView(questionTextView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             ResultViewContainer viewContainer = question.getQuestionViewContainer(this);
             viewContainer.setQuestion(question);
@@ -71,11 +72,11 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
             // ^(used for users' media upload selections)
 
             viewContainers.add(viewContainer);
-            questionsLayout.addView(viewContainer.getView());
+            questionsLayout.addView(viewContainer.getView(), LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
 
         Button submitButton = new Button(this);
-        submitButton.setText("Submit");
+        submitButton.setText(getString(R.string.submit));
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,5 +227,20 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
     @Override
     public void setMediaButtonContainerAwaitingResult(ResultMediaButtonContainer mediaButtonContainer) {
         this.mediaButtonContainerAwaitingResult = mediaButtonContainer;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            // Override default behavior of the action bar's "Up Arrow"
+            //  to go back to the previous page rather than resetting
+            //  the activity.
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
