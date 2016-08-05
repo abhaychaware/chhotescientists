@@ -27,6 +27,7 @@ import com.google.gson.JsonParseException;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.activity.MainActivity;
 import com.kpit.chhotescientists.adapter.SessionAdapter;
+import com.kpit.chhotescientists.common.MyPreferences;
 import com.kpit.chhotescientists.external.RuntimeTypeAdapterFactory;
 import com.kpit.chhotescientists.model.BooleanQuestion;
 import com.kpit.chhotescientists.model.NumberQuestion;
@@ -117,7 +118,8 @@ public class SessionFragment extends Fragment implements
         JSONObject dataObject = new JSONObject();
         try {
             JSONObject parameterObject = new JSONObject();
-            parameterObject.put("user_id", "3"); // TODO: Get access to the teacher's ID! De-hardcode!
+            MyPreferences preferences = new MyPreferences(getContext());
+            parameterObject.put("user_id", preferences.getUserId()); // TODO: Verify this ID is correct
             // todo: this comes from the login response with the new endpoint
             JSONArray dataArray = new JSONArray();
             dataArray.put(parameterObject);
