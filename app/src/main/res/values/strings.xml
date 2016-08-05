@@ -28,5 +28,7 @@
     <string name="media_uploaded_successfully">Media uploaded successfully</string>
     <string name="error_uploading_media">Error uploading media</string>
     <string name="must_be_connected_to_internet">Must be connected to internet</string>
+    <string name="remove_photo">Remove photo</string>
+    <string name="do_you_want_to_remove_photo">Do you want to remove this photo from your response?</string>
 
 </resources>
