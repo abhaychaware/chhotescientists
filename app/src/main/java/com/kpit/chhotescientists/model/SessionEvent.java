@@ -24,6 +24,7 @@ public class SessionEvent implements Parcelable {
         // Write the stored list to this.questions:
         in.readList(questions, CheckInQuestion.class.getClassLoader());
         eventTypeId = in.readString();
+        scheduleId = in.readString();
     }
 
     @Override
@@ -36,6 +37,7 @@ public class SessionEvent implements Parcelable {
         dest.writeString(title);
         dest.writeList(questions);
         dest.writeString(eventTypeId);
+        dest.writeString(scheduleId);
     }
 
     public static final Creator<SessionEvent> CREATOR = new Creator<SessionEvent>() {

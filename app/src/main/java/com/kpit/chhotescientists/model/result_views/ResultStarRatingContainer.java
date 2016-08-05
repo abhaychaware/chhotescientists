@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by grahamearley on 7/31/16.
+ * See parent class ResultViewContainer for documentation.
  */
 public class ResultStarRatingContainer extends ResultViewContainer {
 
@@ -20,7 +20,7 @@ public class ResultStarRatingContainer extends ResultViewContainer {
 
     @Override
     public String getResult() {
-        return Integer.toString(ratingBar.getNumStars());
+        return Integer.toString((int) ratingBar.getRating());
     }
 
     public View getView() {

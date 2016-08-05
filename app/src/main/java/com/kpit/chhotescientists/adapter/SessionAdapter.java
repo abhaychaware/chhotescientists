@@ -19,14 +19,14 @@ import com.kpit.chhotescientists.model.SessionEvent;
 import java.util.List;
 
 /**
- * Created by grahamearley on 7/16/16.
+ * An adapter for filling a RecyclerView with Schedule/Session data cards.
+ *  Each card can be tapped to reveal buttons. These buttons will lead to
+ *  a questionnaire activity.
  */
 public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
     List<Session> items;
     Context context;
-
-
 
     public SessionAdapter(List<Session> items, Context context) {
         this.items = items;
@@ -45,15 +45,16 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     public void onBindViewHolder(final SessionViewHolder holder, int position) {
         Session item = items.get(position);
         holder.getItemLayout().setVisibility(View.GONE);
-
         holder.getTitleTextView().setText(item.date);
         holder.getSubtitleTextView().setText(item.location);
 
-        // Create views from the questions:
+        // Create buttons for the questions:
         for (final SessionEvent event : item.events) {
             Button eventLinkButton = new Button(context);
             eventLinkButton.setText(event.title);
 
+            // Set an event's button to open the questionnaire/check-in activity
+            //  and pass in the parcelable Event object.
             eventLinkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,9 +68,9 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
             holder.getItemLayout().addView(eventLinkButton);
         }
 
+        // Animate the dropdown arrow depending on whether the card is expanded or collapsed:
         final Animation rotateUpAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_flip_up);
         rotateUpAnimation.setFillAfter(true);
-
         final Animation rotateDownAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_flip_down);
         rotateDownAnimation.setFillAfter(true);
 

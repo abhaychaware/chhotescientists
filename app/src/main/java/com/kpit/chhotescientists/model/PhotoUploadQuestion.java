@@ -15,7 +15,7 @@ import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 import com.kpit.chhotescientists.view.MediaButton;
 
 /**
- * Created by grahamearley on 7/24/16.
+ * See parent CheckInQuestion for documentation.
  */
 public class PhotoUploadQuestion extends CheckInQuestion {
     public static final String QUESTION_TYPE = "photo";

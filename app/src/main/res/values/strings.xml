@@ -16,5 +16,19 @@
     <string name="view_calender">View My Calender</string>
     <!-- notification msgs-->
     <string name="notify_welcome">Welcome to Chhote Scientists</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="submit">Submit</string>
+    <string name="session_questionnaire">Session Questionnaire</string>
+    <string name="check_internet_and_try_again">Check your internet connection and try again.</string>
+    <string name="error_sending_response_try_again">There was an error sending your responses. Please try again later.</string>
+    <string name="add_file">Add file</string>
+    <string name="questionnaire_upoaded_successfully">Questionnaire uploaded successfully</string>
+    <string name="questionnaire_upload_error">Error uploading questionnaire. Please try again</string>
+    <string name="media_uploaded_successfully">Media uploaded successfully</string>
+    <string name="error_uploading_media">Error uploading media</string>
+    <string name="must_be_connected_to_internet">Must be connected to internet</string>
+    <string name="remove_photo">Remove photo</string>
+    <string name="do_you_want_to_remove_photo">Do you want to remove this photo from your response?</string>
 
 </resources>

@@ -1,8 +1,6 @@
 package com.kpit.chhotescientists.model.result_views;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 
@@ -13,14 +11,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by grahamearley on 7/31/16.
+ * See parent class ResultViewContainer for documentation.
  */
 public class ResultMediaButtonContainer extends ResultViewContainer {
 
@@ -45,8 +40,8 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
         return this.mediaButton;
     }
 
-    public void setImageWithFile(Bitmap imageBitmap) {
-        this.mediaButton.setImageBitmap(imageBitmap);
+    public void addImage(Bitmap imageBitmap) {
+        this.mediaButton.addImageBitmap(imageBitmap);
         this.bitmapBase64 = this.bitmapToBase64(imageBitmap);
     }
 
@@ -56,17 +51,18 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     private String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
     }
 
     @Override
     public JSONArray addContentsToTextJsonArray(JSONArray dataToSend) throws JSONException {
         JSONObject viewContentsJson = getBaseJsonDataToSend();
 
-        // Don't send actual media data here, just send whether it exists.
+        // Don't send actual media data here, just send a yes/no whether it exists.
         //  Media is sent to a different endpoint.
+
         if (bitmapBase64 != null) {
             viewContentsJson.put("response", "Yes");
         } else {
@@ -79,26 +75,28 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     @Override
-    public JSONObject getMediaJsonToUpload(String eventTypeId, String scheduleId) throws JSONException {
+    public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {
+        ArrayList<JSONObject> jsonObjects = new ArrayList<>();
 
-        if (getResult().equals("")) {
-            return null;
+        for (Bitmap bitmap : mediaButton.getImageBitmaps()) {
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("event_type_id", eventTypeId);
+            dataObject.put("schedule_id", scheduleId);
+
+            dataObject.put("media_type", "photo"); // TODO videos...
+
+            String encodedBitmap = bitmapToBase64(bitmap);
+            dataObject.put("filebindata", encodedBitmap);
+
+            JSONArray dataWrapper = new JSONArray();
+            dataWrapper.put(dataObject);
+
+            JSONObject resultWrapper = new JSONObject();
+            resultWrapper.put("data", dataWrapper);
+
+            jsonObjects.add(resultWrapper);
         }
 
-        JSONObject dataObject = new JSONObject();
-        dataObject.put("event_type_id", eventTypeId);
-        dataObject.put("schedule_id", scheduleId);
-
-        dataObject.put("media_type", "photo"); // TODO videos...
-
-        dataObject.put("filebindata", getResult());
-
-        JSONArray dataWrapper = new JSONArray();
-        dataWrapper.put(dataObject);
-
-        JSONObject resultWrapper = new JSONObject();
-        resultWrapper.put("data", dataWrapper);
-
-        return resultWrapper;
+        return jsonObjects;
     }
 }

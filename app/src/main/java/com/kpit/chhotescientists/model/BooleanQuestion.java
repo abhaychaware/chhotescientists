@@ -6,11 +6,12 @@ import android.os.Parcel;
 import android.view.View;
 import android.widget.ToggleButton;
 
+import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.model.result_views.ResultToggleButtonContainer;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 
 /**
- * Created by grahamearley on 7/16/16.
+ * See parent CheckInQuestion for documentation.
  */
 public class BooleanQuestion extends CheckInQuestion {
     public static final String QUESTION_TYPE = "boolean";
@@ -26,6 +27,9 @@ public class BooleanQuestion extends CheckInQuestion {
     @Override
     public ResultViewContainer getQuestionViewContainer(Activity activity) {
         ToggleButton toggleButton = new ToggleButton(activity);
+        toggleButton.setTextOff(activity.getString(R.string.no));
+        toggleButton.setTextOn(activity.getString(R.string.yes));
+        toggleButton.setChecked(false);
         return new ResultToggleButtonContainer(toggleButton);
     }
 
