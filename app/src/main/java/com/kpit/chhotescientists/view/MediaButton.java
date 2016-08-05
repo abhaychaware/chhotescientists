@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.kpit.chhotescientists.R;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,7 +25,7 @@ public class MediaButton extends LinearLayout {
     public MediaButton(Context context) {
         super(context);
         button = new Button(context);
-        button.setText("Add file");
+        button.setText(R.string.add_file);
 
         imageView = new ImageView(context);
 
@@ -48,7 +50,7 @@ public class MediaButton extends LinearLayout {
         return imageView;
     }
 
-    public void setImageBitmap(Bitmap imageBitmap) {
+    public void addImageBitmap(Bitmap imageBitmap) {
         this.imageView.setImageBitmap(imageBitmap);
     }
 }

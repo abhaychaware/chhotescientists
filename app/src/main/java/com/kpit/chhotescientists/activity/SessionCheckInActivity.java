@@ -7,13 +7,14 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,6 +26,7 @@ import com.kpit.chhotescientists.model.SessionEvent;
 import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
 import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
 import com.kpit.chhotescientists.util.AppController;
+import com.kpit.chhotescientists.util.ConnectionDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +62,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         for (CheckInQuestion question : event.questions) {
             TextView questionTextView = new TextView(this);
             questionTextView.setText(question.getQuestionText());
+            questionTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             questionsLayout.addView(questionTextView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             ResultViewContainer viewContainer = question.getQuestionViewContainer(this);
@@ -72,29 +75,46 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
             // ^(used for users' media upload selections)
 
             viewContainers.add(viewContainer);
-            questionsLayout.addView(viewContainer.getView(), LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            LinearLayout.LayoutParams questionViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            questionViewParams.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.space_16dp);
+            questionsLayout.addView(viewContainer.getView(), questionViewParams);
         }
 
         Button submitButton = new Button(this);
         submitButton.setText(getString(R.string.submit));
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    // Upload text responses to questions:
-                    JSONObject questionsTextJson = assembleTextJson(event);
-                    Log.d("Text Response", questionsTextJson.toString());
-                    uploadTextResponses(questionsTextJson);
 
-                    // Also upload any media if possible
-                    uploadMediaResponses(event);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if (ConnectionDetector.isConnectingToInternet(this)) {
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        // Upload text responses to questions:
+                        JSONObject questionsTextJson = assembleTextJson(event);
+                        Log.d("Text Response", questionsTextJson.toString());
+                        uploadTextResponses(questionsTextJson);
+
+                        // Also upload any media if possible
+                        uploadMediaResponses(event);
+
+                        // Close the activity after sending.
+                        onBackPressed();
+                    } catch (JSONException e) {
+                        Toast.makeText(SessionCheckInActivity.this, R.string.error_sending_response_try_again, Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            submitButton.setEnabled(false);
+            submitButton.setText(R.string.must_be_connected_to_internet);
+        }
 
-        questionsLayout.addView(submitButton);
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        buttonParams.topMargin = getResources().getDimensionPixelOffset(R.dimen.space_32dp);
+        buttonParams.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.space_16dp);
+
+        questionsLayout.addView(submitButton, buttonParams);
     }
 
     /**
@@ -107,13 +127,12 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("GRAHAMLOG",  "TEXT UPLOAD: " + response.toString());
+                        Toast.makeText(SessionCheckInActivity.this, R.string.questionnaire_upoaded_successfully, Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("GRAHAMLOG", "TEXT UPLOAD: " + error.toString());
+                        Toast.makeText(SessionCheckInActivity.this, R.string.questionnaire_upload_error, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -131,14 +150,13 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("GRAHAMLOG", "MEDIA UPLOAD: " + response.toString());
+                        Toast.makeText(SessionCheckInActivity.this, R.string.media_uploaded_successfully, Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("GRAHAMLOG", "MEDIA UPLOAD: " + error.toString());
-            }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(SessionCheckInActivity.this, R.string.error_uploading_media, Toast.LENGTH_LONG).show();
+                    }
         });
 
         AppController.getInstance().addToRequestQueue(jsonObjReq);
@@ -214,7 +232,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                 // If there is a mediaButtonContainer awaiting a result,
                 //  then put this result in that container's ImageView.
                 if (this.mediaButtonContainerAwaitingResult != null) {
-                    this.mediaButtonContainerAwaitingResult.setImageWithFile(bitmap);
+                    this.mediaButtonContainerAwaitingResult.addImage(bitmap);
                     this.mediaButtonContainerAwaitingResult = null;
                 }
 
