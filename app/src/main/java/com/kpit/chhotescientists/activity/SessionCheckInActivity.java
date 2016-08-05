@@ -170,10 +170,9 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
      */
     private void uploadMediaResponses(SessionEvent event) throws JSONException {
         for (ResultViewContainer container : viewContainers) {
-            JSONObject mediaJsonToSend = container.getMediaJsonToUpload(event.getId(), event.getScheduleId());
-            if (mediaJsonToSend != null) {
-                // Send the media file(s)
-                uploadMediaResponse(mediaJsonToSend);
+            List<JSONObject> mediaJsonsToSend = container.getMediaJsonsToUpload(event.getId(), event.getScheduleId());
+            for (JSONObject object : mediaJsonsToSend) {
+                uploadMediaResponse(object);
             }
         }
     }

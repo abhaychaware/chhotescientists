@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * See parent class ResultViewContainer for documentation.
@@ -73,25 +75,28 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     @Override
-    public JSONObject getMediaJsonToUpload(String eventTypeId, String scheduleId) throws JSONException {
+    public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {
+        ArrayList<JSONObject> jsonObjects = new ArrayList<>();
 
-        if (getResult().equals("")) {
-            return null;
+        for (Bitmap bitmap : mediaButton.getImageBitmaps()) {
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("event_type_id", eventTypeId);
+            dataObject.put("schedule_id", scheduleId);
+
+            dataObject.put("media_type", "photo"); // TODO videos...
+
+            String encodedBitmap = bitmapToBase64(bitmap);
+            dataObject.put("filebindata", encodedBitmap);
+
+            JSONArray dataWrapper = new JSONArray();
+            dataWrapper.put(dataObject);
+
+            JSONObject resultWrapper = new JSONObject();
+            resultWrapper.put("data", dataWrapper);
+
+            jsonObjects.add(resultWrapper);
         }
-        JSONObject dataObject = new JSONObject();
-        dataObject.put("event_type_id", eventTypeId);
-        dataObject.put("schedule_id", scheduleId);
 
-        dataObject.put("media_type", "photo"); // TODO videos...
-
-        dataObject.put("filebindata", getResult());
-
-        JSONArray dataWrapper = new JSONArray();
-        dataWrapper.put(dataObject);
-
-        JSONObject resultWrapper = new JSONObject();
-        resultWrapper.put("data", dataWrapper);
-
-        return resultWrapper;
+        return jsonObjects;
     }
 }

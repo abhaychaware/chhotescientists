@@ -3,6 +3,7 @@ package com.kpit.chhotescientists.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +21,8 @@ import com.kpit.chhotescientists.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by grahamearley on 7/31/16.
@@ -88,5 +91,17 @@ public class MediaButton extends LinearLayout {
         });
 
         this.imageCarousel.addView(imageView, width, height);
+    }
+
+    public List<Bitmap> getImageBitmaps() {
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        for (int i = 0; i < imageCarousel.getChildCount(); i++) {
+            ImageView imageVewChild = (ImageView) imageCarousel.getChildAt(i);
+            Bitmap bitmap = ((BitmapDrawable) imageVewChild.getDrawable()).getBitmap();
+            bitmaps.add(bitmap);
+        }
+
+        return bitmaps;
     }
 }

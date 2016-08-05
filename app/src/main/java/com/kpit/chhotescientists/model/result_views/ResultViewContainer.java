@@ -8,6 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class for holding onto a View and the view's "result."
  *  A result could be the text a user inputs into the view,
@@ -42,9 +45,8 @@ public abstract class ResultViewContainer {
         return dataToSend;
     }
 
-    public JSONObject getMediaJsonToUpload(String eventTypeId, String scheduleId) throws JSONException {
-        // By default, don't upload any media. Media classes will override this.
-        return null;
+    public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {        // By default, don't upload any media. Media classes will override this.
+        return new ArrayList<>();
     }
 
     public void setQuestion(CheckInQuestion question) {
