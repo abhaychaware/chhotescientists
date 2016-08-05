@@ -4,9 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.support.v4.widget.NestedScrollView;
+import android.view.Gravity;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.kpit.chhotescientists.R;
 
@@ -20,37 +25,43 @@ import java.io.InputStream;
 public class MediaButton extends LinearLayout {
 
     private Button button;
-    private ImageView imageView;
+    private LinearLayout imageCarousel;
 
     public MediaButton(Context context) {
         super(context);
         button = new Button(context);
         button.setText(R.string.add_file);
 
-        imageView = new ImageView(context);
+        HorizontalScrollView scrollView = new HorizontalScrollView(context);
 
-        this.setOrientation(HORIZONTAL);
-        this.addView(button);
-        this.addView(imageView);
-    }
+        imageCarousel = new LinearLayout(context);
+        imageCarousel.setOrientation(HORIZONTAL);
 
-    public void setButtonText(String text) {
-        this.button.setText(text);
-    }
+        scrollView.addView(imageCarousel);
 
-    public void setImageView(Drawable image) {
-        imageView.setImageDrawable(image);
+        this.setOrientation(VERTICAL);
+
+        LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        buttonParams.gravity = Gravity.CENTER_HORIZONTAL;
+
+        this.addView(button, buttonParams);
+        this.addView(scrollView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     }
 
     public void setButtonOnClickListener(OnClickListener onClickListener) {
         button.setOnClickListener(onClickListener);
     }
-
-    public ImageView getImageView() {
-        return imageView;
-    }
-
     public void addImageBitmap(Bitmap imageBitmap) {
-        this.imageView.setImageBitmap(imageBitmap);
+        Context context = getContext();
+
+        ImageView imageView = new ImageView(context);
+        imageView.setImageBitmap(imageBitmap);
+
+        int height = 300;
+        int width = height;
+
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        this.imageCarousel.addView(imageView, width, height);
     }
 }
