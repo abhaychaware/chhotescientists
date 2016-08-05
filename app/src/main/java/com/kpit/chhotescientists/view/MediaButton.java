@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -52,15 +54,38 @@ public class MediaButton extends LinearLayout {
         button.setOnClickListener(onClickListener);
     }
     public void addImageBitmap(Bitmap imageBitmap) {
-        Context context = getContext();
+        final Context context = getContext();
 
-        ImageView imageView = new ImageView(context);
+        final ImageView imageView = new ImageView(context);
         imageView.setImageBitmap(imageBitmap);
 
         int height = 300;
         int width = height;
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog alertDialog = new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.remove_photo))
+                        .setMessage(context.getString(R.string.do_you_want_to_remove_photo))
+                        .setPositiveButton(context.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                imageCarousel.removeView(imageView);
+                            }
+                        })
+                        .setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setCancelable(true)
+                        .show();
+            }
+        });
 
         this.imageCarousel.addView(imageView, width, height);
     }
