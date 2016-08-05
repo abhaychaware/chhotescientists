@@ -208,7 +208,7 @@ public class UpdateFragment extends Fragment implements
                         item.setUpdateImage(feedObj.getString("update_image"));
 
                         item.setUpdateDate(feedObj.getString("update_date"));
-                        item.setUpdateTimestamp(feedObj.getString("timestamp"));
+                        //item.setUpdateTimestamp(feedObj.getString("timestamp"));
 
                         feedItems.add(item);
                         //adapter.notifyDataSetChanged();

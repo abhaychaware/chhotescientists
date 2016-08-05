@@ -21,17 +21,15 @@ import com.kpit.chhotescientists.validation.Universal;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vb on 4/11/2016.
@@ -120,20 +118,19 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Parsing json reponse and passing the data to feed view list adapter
      */
-    private void SaveUserDataProfile(JSONObject response) {
+    private void saveUserDataProfile(JSONObject feedObj) {
         try {
 
-            JSONArray feedArray = response.getJSONArray("user");
-            Log.e("Saving User Profile", response.toString());
-
-            JSONObject feedObj = (JSONObject) feedArray.get(0);
+            Log.e("Saving User Profile", feedObj.toString());
 
             mPreferences.setUserId(feedObj.getString("user_id"));
             mPreferences.setUserFullname(feedObj.getString("user_fullname"));
             mPreferences.setUserMobile(feedObj.getString("user_mobile"));
             mPreferences.setUserEmail(feedObj.getString("user_email"));
+/*
             mPreferences.setUserResidence(feedObj.getString("user_area_of_residence"));
             mPreferences.setUserCenter(feedObj.getString("user_nearest_cs_center"));
+*/
 
 
         } catch (JSONException e) {
@@ -177,29 +174,15 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             try {
-
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(params[0]);
-
-                List parameters = new ArrayList(2);
-                JSONObject jsonObject = new JSONObject();
-
-                jsonObject.put("user_mobile", edtUsername.getText().toString().trim());
-                jsonObject.put("user_email", edtUsername.getText().toString().trim());
-                jsonObject.put("user_password", edtPassword.getText().toString().trim());
-
-                parameters.add(new BasicNameValuePair("data", jsonObject
-                        .toString()));
-
-                Log.e("JSON Sent", jsonObject.toString());
-
-                httpPost.setEntity(new UrlEncodedFormEntity(parameters));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-
-                String responce = EntityUtils
-                        .toString(httpResponse.getEntity());
-                Log.e("Server JOSN", responce);
-                return responce;
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(getString(R.string.login_user));
+                StringEntity se = new StringEntity(assembleTextJson().toString());
+                se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                post.setEntity(se);
+                HttpResponse response = client.execute(post);
+                String result = EntityUtils.toString(response.getEntity());
+                Log.e("Server JOSN", result);
+                return result;
             } catch (JSONException e2) {
                 // TODO Auto-generated catch block
                 e2.printStackTrace();
@@ -212,15 +195,15 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String response) {
-            Log.e("Server Response", response + "--");
+            Log.e("Server Response", response);
 
             int flag = 0;
-            JSONObject jsonObj = null;
+            JSONObject jsonObj , feedObj= null;
             try {
                 jsonObj = new JSONObject(response);
                 resAuth = jsonObj.getJSONArray("data");
-                JSONObject feedObj = resAuth.getJSONObject(0);
-                flag = feedObj.getInt("success");
+                feedObj = resAuth.getJSONObject(0);
+                flag = feedObj.getString("status").equalsIgnoreCase("success")?1:0;
 
                 Log.e("log in flag ", String.valueOf(flag));
             } catch (JSONException e) {
@@ -245,7 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                         LoginActivity.this, i, bundle);
 
                 //saving data to prefrences.
-                SaveUserDataProfile(jsonObj);
+                saveUserDataProfile(feedObj);
 
                 Toast.makeText(LoginActivity.this,
                         getString(R.string.notify_welcome), Toast.LENGTH_SHORT)
@@ -262,4 +245,24 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+
+    private JSONObject assembleTextJson() throws JSONException {
+        // This nested structure is based on the endpoint spec.
+        //   Could probably use optimization at some point. TODO
+
+        JSONObject textDataToSend = new JSONObject();
+        JSONArray dataJsonArray = new JSONArray();
+        JSONObject queryJson = new JSONObject();
+        queryJson.put("user_mobile", edtUsername.getText().toString().trim());
+        queryJson.put("user_name", edtUsername.getText().toString().trim());
+        queryJson.put("password", edtPassword.getText().toString().trim());
+        dataJsonArray.put(queryJson);
+        textDataToSend.put("data", dataJsonArray);
+        Log.e("JSON Sent", textDataToSend.toString());
+
+        return textDataToSend;
+
+    }
+
 }

@@ -152,7 +152,7 @@ public class ExperimentViewActivity extends AppCompatActivity implements
     }
 
     //api call to get updates
-    private void loadUpdates() {
+    private void loadUpdates()  {
 
         recyclerView.setVisibility(View.VISIBLE);
         pBar.setVisibility(View.INVISIBLE);
@@ -175,8 +175,15 @@ public class ExperimentViewActivity extends AppCompatActivity implements
         if (ConnectionDetector.isConnectingToInternet(this)) {
 
             // making fresh volley request and getting json
-            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, getString(R.string.get_selected_experiment).concat("?exp_cat=" + rcvdCatID), null, new Response.Listener<JSONObject>() {
-
+            // JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, getString(R.string.get_selected_experiment).concat("?exp_cat=" + rcvdCatID), null, new Response.Listener<JSONObject>() {
+            JSONObject query = null;
+            try {
+                query = assembleTextJson(rcvdCatID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.i("###", "Theme Query : " + query.toString());
+            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.POST, getString(R.string.get_theme_experiments), query, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     // VolleyLog.d(TAG,
@@ -213,6 +220,22 @@ public class ExperimentViewActivity extends AppCompatActivity implements
 
     }
 
+    private JSONObject assembleTextJson(String rcvdCatID) throws JSONException {
+            // This nested structure is based on the endpoint spec.
+            //   Could probably use optimization at some point. TODO
+            JSONObject textDataToSend = new JSONObject();
+            JSONArray dataJsonArray = new JSONArray();
+
+            JSONObject queryJson = new JSONObject();
+            queryJson.put("theme_id", rcvdCatID);
+
+            dataJsonArray.put(queryJson);
+            textDataToSend.put("data", dataJsonArray);
+
+            return textDataToSend;
+
+    }
+
 
     /**
      * Parsing json reponse and passing the data to feed view list adapter
@@ -236,7 +259,8 @@ public class ExperimentViewActivity extends AppCompatActivity implements
                         item.setExpid(feedObj.getString("exp_id"));
                         item.setExpname(feedObj.getString("exp_name"));
                         item.setExpdescription(feedObj.getString("exp_description"));
-                        item.setExpimage(feedObj.getString("exp_image"));
+                        item.setExpdescriptionShort(feedObj.getString("exp_description_short"));
+                        item.setExpimage(feedObj.getString("exp_image_path"));
                         item.setExpcat(feedObj.getString("exp_cat"));
                         item.setExpVideoURL(feedObj.getString("exp_video_url"));
                         item.setExpPDFUrl(feedObj.getString("exp_pdf_url"));

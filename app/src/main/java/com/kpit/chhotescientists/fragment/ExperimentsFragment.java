@@ -26,12 +26,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.activity.ExperimentViewActivity;
-import com.kpit.chhotescientists.activity.UpdateDetailActivity;
 import com.kpit.chhotescientists.adapter.CustomRecycleCategoryAdapter;
 import com.kpit.chhotescientists.common.MyPreferences;
 import com.kpit.chhotescientists.custom.DividerItemDecoration;
 import com.kpit.chhotescientists.pojo.CategoryVO;
-import com.kpit.chhotescientists.pojo.UpdatesVO;
 import com.kpit.chhotescientists.util.AppController;
 import com.kpit.chhotescientists.util.ConnectionDetector;
 
@@ -156,7 +154,7 @@ public class ExperimentsFragment extends Fragment implements
         if (ConnectionDetector.isConnectingToInternet(getActivity())) {
 
             // making fresh volley request and getting json
-            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, getString(R.string.get_update_category), null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, getString(R.string.get_themes), null, new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {

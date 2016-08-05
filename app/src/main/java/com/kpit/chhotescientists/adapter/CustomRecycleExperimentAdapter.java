@@ -35,7 +35,7 @@ public class CustomRecycleExperimentAdapter extends RecyclerView.Adapter<CustomR
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ExperimentVO item = feeditems.get(position);
         holder.txtHeading.setText(item.getExpname());
-        holder.txtDescription.setText(item.getExpdescription());
+        holder.txtDescription.setText(item.getExpdescriptionShort());
         holder.imgView.setImageUrl(item.getExpimage(), imageLoader);
     }
 

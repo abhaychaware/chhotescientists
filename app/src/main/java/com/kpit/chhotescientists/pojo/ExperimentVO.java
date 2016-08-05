@@ -2,20 +2,35 @@ package com.kpit.chhotescientists.pojo;
 
 import java.io.Serializable;
 
-/**
- * Created by VB on 4/19/2016.
- */
+
 public class ExperimentVO implements Serializable {
 
-    String expid, expname, expdescription, expimage, expcat, expVideoURL, expPDFUrl;
+    String expid;
+    String expname;
+    String expdescription;
+
+    public String getExpdescriptionShort() {
+        return expdescriptionShort;
+    }
+
+    public void setExpdescriptionShort(String expdescriptionShort) {
+        this.expdescriptionShort = expdescriptionShort;
+    }
+
+    String expdescriptionShort;
+    String expimage;
+    String expcat;
+    String expVideoURL;
+    String expPDFUrl;
 
     public ExperimentVO() {
 
     }
 
-    public ExperimentVO(String expid, String expname, String expdescription, String expimage, String expcat, String expVideoURL, String expPDFUrl) {
+    public ExperimentVO(String expid, String expname, String expdescription,String expdescriptionShort, String expimage, String expcat, String expVideoURL, String expPDFUrl) {
         this.expid = expid;
         this.expname = expname;
+        this.expdescriptionShort = expdescriptionShort;
         this.expdescription = expdescription;
         this.expimage = expimage;
         this.expcat = expcat;
