@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by grahamearley on 7/31/16.
@@ -93,13 +95,14 @@ public class MediaButton extends LinearLayout {
         this.imageCarousel.addView(imageView, width, height);
     }
 
-    public List<Bitmap> getImageBitmaps() {
-        ArrayList<Bitmap> bitmaps = new ArrayList<>();
-
+    public Map<String,Bitmap> getImageBitmaps() {
+        Map<String,Bitmap> bitmaps = new HashMap<String, Bitmap>();
         for (int i = 0; i < imageCarousel.getChildCount(); i++) {
             ImageView imageVewChild = (ImageView) imageCarousel.getChildAt(i);
+
             Bitmap bitmap = ((BitmapDrawable) imageVewChild.getDrawable()).getBitmap();
-            bitmaps.add(bitmap);
+            // TODO: 8/12/2016 capture the image name from file chooser and use it here
+            bitmaps.put("pic"+i+".jpg",bitmap);
         }
 
         return bitmaps;

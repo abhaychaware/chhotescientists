@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="register_user">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_user_registration.php</string>
-    <string name="login_user">http://52.86.101.47/user/user/authenticate-user</string>
-    <string name="change_password_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_change_password.php</string>
-    <string name="forgot_password_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_forgot_password.php</string>
     <string name="get_locations_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/get_locations.php</string>
     <string name="get_centers_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/get_centers.php</string>
-    <string name="update_profile_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_update_user_profile.php</string>
+
+
+    <string name="login_user">http://52.86.101.47/user/user/authenticate-user</string>
+    <string name="change_password_url">http://52.86.101.47/user/user/change-password</string>
+    <string name="forgot_password_url">http://52.86.101.47/user/user/forgot-password</string>
+    <string name="update_profile_url">http://52.86.101.47/user/user/update-user-profile</string>
+
     <string name="get_updates">http://52.86.101.47/user/user/get-updates</string>
     <string name="get_themes">http://52.86.101.47/user/user/get-themes</string>
     <string name="get_theme_experiments">http://52.86.101.47/user/user/get-theme-experiments</string>
-    <string name="send_contact_feedback">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_contactus.php</string>
-    <string name="version_check">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/version_check.php</string>
-
+    <string name="send_contact_feedback">http://52.86.101.47/user/user/save-feedback</string>
+    <string name="version_check">http://52.86.101.47/user/user/check-version</string>
     <string name="get_schedules">http://52.86.101.47/user/user/get-schedules</string>
-
-    <string name="send_feedback">http://cityfi.in/restapi/post_contactus.php</string>
-    <string name="update_profile">http://cityfi.in/restapi/post_update_user_profile.php</string>
-
     <string name="upload_event_questionnaire">http://52.86.101.47/user/user/save-event-info</string>
     <string name="upload_event_media">http://52.86.101.47/user/user/save-event-image-video</string>
 

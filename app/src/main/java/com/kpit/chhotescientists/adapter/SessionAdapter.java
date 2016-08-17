@@ -46,7 +46,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         Session item = items.get(position);
         holder.getItemLayout().setVisibility(View.GONE);
         holder.getTitleTextView().setText(item.date);
-        holder.getSubtitleTextView().setText(item.location);
+        holder.getSubtitleTextView().setText("Theme : "+item.theme+", in "+item.location);
 
         // Create buttons for the questions:
         for (final SessionEvent event : item.events) {
@@ -81,11 +81,17 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
                     holder.expandArrow.startAnimation(rotateDownAnimation);
                     holder.getItemLayout().setVisibility(View.GONE);
                 } else {
+                    //hide all other cards
+                    hideAllCards();
                     holder.expandArrow.startAnimation(rotateUpAnimation);
                     holder.getItemLayout().setVisibility(View.VISIBLE);
                 }
             }
         });
+    }
+
+    private void hideAllCards() {
+        //TODO write function to hide all the cards
     }
 
     @Override

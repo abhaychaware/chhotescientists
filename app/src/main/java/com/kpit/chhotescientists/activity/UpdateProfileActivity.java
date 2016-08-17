@@ -36,8 +36,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,7 +145,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 if (ConnectionDetector
                         .isConnectingToInternet(UpdateProfileActivity.this)) {
 
-                    new ExecuteProfileUpdate().execute(getString(R.string.update_profile_url));
+                    new ExecuteProfileUpdate().execute();
 
                 } else {
                     Toast.makeText(
@@ -426,28 +429,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             // Creating service handler class instance
             try {
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(params[0]);
-
-                List parameters = new ArrayList(2);
-
-                JSONObject jsonObject = new JSONObject();
-
-                jsonObject.put("user_id", myPreferences.getUserId());
-
-                jsonObject.put("user_area_of_residence", edtResidence.getText().toString().trim());
-                jsonObject.put("user_nearest_cs_center", strCSCenter);
-
-                parameters.add(new BasicNameValuePair("data", jsonObject
-                        .toString()));
-                Log.e("JSON Sent", jsonObject.toString());
-                httpPost.setEntity(new UrlEncodedFormEntity(parameters));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-
-                String responce = EntityUtils
-                        .toString(httpResponse.getEntity());
-                Log.e("Server JOSN", responce);
-                return responce;
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(getString(R.string.update_profile_url));
+                StringEntity se = new StringEntity(assembleTextJson().toString());
+                se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                post.setEntity(se);
+                HttpResponse response = client.execute(post);
+                String result = EntityUtils.toString(response.getEntity());
+                Log.e("Server JOSN", result);
+                return result;
             } catch (JSONException e2) {
                 // TODO Auto-generated catch block
                 e2.printStackTrace();
@@ -459,17 +449,34 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         }
 
+        private JSONObject assembleTextJson() throws JSONException {
+            // This nested structure is based on the endpoint spec.
+            //   Could probably use optimization at some point. TODO
+            JSONObject textDataToSend = new JSONObject();
+            JSONArray dataJsonArray = new JSONArray();
+            JSONObject queryJson = new JSONObject();
+            queryJson.put("user_id", myPreferences.getUserId());
+            queryJson.put("fname", edtFullname.getText().toString().trim());
+            dataJsonArray.put(queryJson);
+            textDataToSend.put("data", dataJsonArray);
+            Log.e("JSON Sent", textDataToSend.toString());
+
+            return textDataToSend;
+
+        }
+
+
         protected void onPostExecute(String response) {
             Log.e("Server Response", response + "--");
 
             int flag = 0;
-            JSONObject jsonObj = null;
+            JSONObject jsonObj , feedObj= null;
             try {
                 jsonObj = new JSONObject(response);
                 resAuth = jsonObj.getJSONArray("data");
-                JSONObject feedObj = resAuth.getJSONObject(0);
-                flag = feedObj.getInt("success");
-                Log.e("log in flag ", String.valueOf(flag));
+                feedObj = resAuth.getJSONObject(0);
+                flag = feedObj.getString("status").equalsIgnoreCase("success")?1:0;
+                Log.e("response status flag", String.valueOf(flag));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -478,8 +485,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
             if (flag != 0) {
 
                 pDialog.dismiss();
-
-                SaveUserDataProfile(jsonObj);
+                // TODO update preferences with new profile
+                //SaveUserDataProfile(jsonObj);
 
                 Toast.makeText(UpdateProfileActivity.this,
                         "Profile Update Successful.", Toast.LENGTH_SHORT)

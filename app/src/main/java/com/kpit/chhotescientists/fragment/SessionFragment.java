@@ -119,8 +119,7 @@ public class SessionFragment extends Fragment implements
         try {
             JSONObject parameterObject = new JSONObject();
             MyPreferences preferences = new MyPreferences(getContext());
-            parameterObject.put("user_id", preferences.getUserId()); // TODO: Verify this ID is correct
-            // todo: this comes from the login response with the new endpoint
+            parameterObject.put("user_id", preferences.getUserId());
             JSONArray dataArray = new JSONArray();
             dataArray.put(parameterObject);
             dataObject.put("data", dataArray);

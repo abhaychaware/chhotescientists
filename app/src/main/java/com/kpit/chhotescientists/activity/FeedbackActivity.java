@@ -22,9 +22,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -146,26 +150,15 @@ public class FeedbackActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             // Creating service handler class instance
             try {
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(params[0]);
-
-                List parameters = new ArrayList(2);
-
-                JSONObject jsonObject = new JSONObject();
-
-                jsonObject.put("uid", myPreferences.getUserId());
-                jsonObject.put("message", edtQuery.getText().toString().trim());
-
-                parameters.add(new BasicNameValuePair("data", jsonObject
-                        .toString()));
-                Log.e("JSON Sent", jsonObject.toString());
-                httpPost.setEntity(new UrlEncodedFormEntity(parameters));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-
-                String responce = EntityUtils
-                        .toString(httpResponse.getEntity());
-                Log.e("Server JOSN", responce);
-                return responce;
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(getString(R.string.send_contact_feedback));
+                StringEntity se = new StringEntity(assembleTextJson().toString());
+                se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                post.setEntity(se);
+                HttpResponse response = client.execute(post);
+                String result = EntityUtils.toString(response.getEntity());
+                Log.e("Server JOSN", result);
+                return result;
             } catch (JSONException e2) {
                 // TODO Auto-generated catch block
                 e2.printStackTrace();
@@ -176,17 +169,35 @@ public class FeedbackActivity extends AppCompatActivity {
                 return null;
             }
         }
+        private JSONObject assembleTextJson() throws JSONException {
+            // This nested structure is based on the endpoint spec.
+            //   Could probably use optimization at some point. TODO
 
+            JSONObject textDataToSend = new JSONObject();
+            JSONArray dataJsonArray = new JSONArray();
+            JSONObject queryJson = new JSONObject();
+            queryJson.put("user_id", myPreferences.getUserId());
+            queryJson.put("query", edtQuery.getText().toString().trim());
+
+            dataJsonArray.put(queryJson);
+            textDataToSend.put("data", dataJsonArray);
+            Log.e("JSON Sent", textDataToSend.toString());
+
+            return textDataToSend;
+
+        }
         @Override
         protected void onPostExecute(String data) {
             Log.e("Server Response", data + "--");
-            pDialog.dismiss();
+
             int statusflag = 0;
-            JSONObject jsonObj;
+            JSONArray resAuth;
+            JSONObject jsonObj , feedObj= null;
             try {
                 jsonObj = new JSONObject(data);
-                //JSONObject jsonObj1 = jsonObj.getJSONObject("data");
-                statusflag = Integer.parseInt(jsonObj.getString("success"));
+                resAuth = jsonObj.getJSONArray("data");
+                feedObj = resAuth.getJSONObject(0);
+                statusflag = feedObj.getString("status").equalsIgnoreCase("success")?1:0;
                 Log.e("response status flag", String.valueOf(statusflag));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -197,16 +208,6 @@ public class FeedbackActivity extends AppCompatActivity {
                 Toast.makeText(FeedbackActivity.this,
                         "Feedback Submitted Successfully.", Toast.LENGTH_SHORT)
                         .show();
-                /*ChnagePasswordActivity.this.finish();
-                Intent i = new Intent(ChnagePasswordActivity.this,
-                        LoginActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
-                        ChnagePasswordActivity.this,
-                        R.anim.in_right_animation,
-                        R.anim.out_left_animation).toBundle();
-                ActivityCompat.startActivity(
-                        ChnagePasswordActivity.this, i, bundle);*/
 
 
                 onBackPressed();

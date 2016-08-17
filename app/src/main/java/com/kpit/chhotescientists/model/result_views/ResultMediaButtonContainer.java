@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * See parent class ResultViewContainer for documentation.
@@ -77,11 +79,16 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     @Override
     public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {
         ArrayList<JSONObject> jsonObjects = new ArrayList<>();
+//        for (Bitmap bitmap : mediaButton.getImageBitmaps()) {
+        Map map = mediaButton.getImageBitmaps();
+        Set<String> keys = map.keySet();
+        for (String key : keys) {
+            Bitmap bitmap = (Bitmap)map.get(key);
 
-        for (Bitmap bitmap : mediaButton.getImageBitmaps()) {
             JSONObject dataObject = new JSONObject();
             dataObject.put("event_type_id", eventTypeId);
             dataObject.put("schedule_id", scheduleId);
+            dataObject.put("filename", key);
 
             dataObject.put("media_type", "photo"); // TODO videos...
 

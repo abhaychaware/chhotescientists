@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (ConnectionDetector
                             .isConnectingToInternet(LoginActivity.this)) {
 
-                        new ExecuteUserLoginTask().execute(getString(R.string.login_user));
+                        new ExecuteUserLoginTask().execute();
 
                     } else {
                         Toast.makeText(
