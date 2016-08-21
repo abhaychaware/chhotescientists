@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -96,6 +97,7 @@ public class ExperimentViewActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view, int position) {
 
+                Toast.makeText(getApplicationContext(),"Loading ...",Toast.LENGTH_LONG).show();
                 ExperimentVO item = feedItems.get(position);
 
                 Intent i = new Intent(ExperimentViewActivity.this,
@@ -260,7 +262,14 @@ public class ExperimentViewActivity extends AppCompatActivity implements
                         item.setExpname(feedObj.getString("exp_name"));
                         item.setExpdescription(feedObj.getString("exp_description"));
                         item.setExpdescriptionShort(feedObj.getString("exp_description_short"));
-                        item.setExpimage(feedObj.getString("exp_image_path"));
+                        item.setExpicon(feedObj.getString("exp_icon_path"));
+
+                        JSONArray arrJson = feedObj.getJSONArray("exp_image_path");
+                        String[] arr=new String[arrJson.length()];
+                        for(int k=0;k<arrJson.length();k++) {
+                            arr[k] = arrJson.getString(k);
+                        }
+                        item.setExpimages(arr);
                         item.setExpcat(feedObj.getString("exp_cat"));
                         item.setExpVideoURL(feedObj.getString("exp_video_url"));
                         item.setExpPDFUrl(feedObj.getString("exp_pdf_url"));

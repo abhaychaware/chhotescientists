@@ -36,7 +36,7 @@ public class CustomRecycleExperimentAdapter extends RecyclerView.Adapter<CustomR
         ExperimentVO item = feeditems.get(position);
         holder.txtHeading.setText(item.getExpname());
         holder.txtDescription.setText(item.getExpdescriptionShort());
-        holder.imgView.setImageUrl(item.getExpimage(), imageLoader);
+        holder.imgView.setImageUrl(item.getExpicon(), imageLoader);
     }
 
     @Override

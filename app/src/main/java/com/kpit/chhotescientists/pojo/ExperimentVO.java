@@ -9,30 +9,33 @@ public class ExperimentVO implements Serializable {
     String expname;
     String expdescription;
 
-    public String getExpdescriptionShort() {
-        return expdescriptionShort;
-    }
-
-    public void setExpdescriptionShort(String expdescriptionShort) {
-        this.expdescriptionShort = expdescriptionShort;
-    }
-
     String expdescriptionShort;
-    String expimage;
+    String expicon;
     String expcat;
     String expVideoURL;
     String expPDFUrl;
+
+    public String[] getExpimages() {
+        return expimages;
+    }
+
+    public void setExpimages(String[] expimages) {
+        this.expimages = expimages;
+    }
+
+    String[] expimages;
 
     public ExperimentVO() {
 
     }
 
-    public ExperimentVO(String expid, String expname, String expdescription,String expdescriptionShort, String expimage, String expcat, String expVideoURL, String expPDFUrl) {
+    public ExperimentVO(String expid, String expname, String expdescription,String expdescriptionShort, String expicon, String[] expimages,String expcat, String expVideoURL, String expPDFUrl) {
         this.expid = expid;
         this.expname = expname;
         this.expdescriptionShort = expdescriptionShort;
         this.expdescription = expdescription;
-        this.expimage = expimage;
+        this.expicon = expicon;
+        this.expimages=expimages;
         this.expcat = expcat;
         this.expVideoURL = expVideoURL;
         this.expPDFUrl = expPDFUrl;
@@ -87,11 +90,19 @@ public class ExperimentVO implements Serializable {
         this.expdescription = expdescription;
     }
 
-    public String getExpimage() {
-        return expimage;
+    public String getExpicon() {
+        return expicon;
     }
 
-    public void setExpimage(String expimage) {
-        this.expimage = expimage;
+    public void setExpicon(String expicon) {
+        this.expicon = expicon;
     }
+
+    public String getExpdescriptionShort() {
+        return expdescriptionShort;
+    }
+
+    public void setExpdescriptionShort(String expdescriptionShort) {this.expdescriptionShort = expdescriptionShort; }
+
+
 }
