@@ -79,7 +79,7 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     @Override
     public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {
         ArrayList<JSONObject> jsonObjects = new ArrayList<>();
-//        for (Bitmap bitmap : mediaButton.getImageBitmaps()) {
+
         Map map = mediaButton.getImageBitmaps();
         Set<String> keys = map.keySet();
         for (String key : keys) {
