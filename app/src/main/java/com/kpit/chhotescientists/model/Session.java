@@ -2,6 +2,10 @@ package com.kpit.chhotescientists.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -22,6 +26,20 @@ public class Session {
             for (SessionEvent event : events) {
                 event.setScheduleId(scheduleId);
             }
+        }
+    }
+
+    public String getDateString() {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm a");
+            Date parsedDate = sdf.parse(this.date);
+            DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance();
+
+            // Format according to device's locale:
+            return dateFormat.format(parsedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return this.date;
         }
     }
 }

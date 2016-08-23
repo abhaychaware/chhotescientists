@@ -46,7 +46,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     public void onBindViewHolder(final SessionViewHolder holder, int position) {
         Session item = items.get(position);
         holder.getItemLayout().setVisibility(View.GONE);
-        holder.getTitleTextView().setText(item.date);
+        holder.getTitleTextView().setText(item.getDateString());
         holder.getSubtitleTextView().setText("Theme : "+item.theme+", in "+item.location);
 
         // Create buttons for the questions:
