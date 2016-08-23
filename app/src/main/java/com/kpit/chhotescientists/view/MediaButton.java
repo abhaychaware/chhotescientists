@@ -95,16 +95,4 @@ public class MediaButton extends LinearLayout {
         this.imageCarousel.addView(imageView, width, height);
     }
 
-    public Map<String,Bitmap> getImageBitmaps() {
-        Map<String,Bitmap> bitmaps = new HashMap<String, Bitmap>();
-        for (int i = 0; i < imageCarousel.getChildCount(); i++) {
-            ImageView imageVewChild = (ImageView) imageCarousel.getChildAt(i);
-
-            Bitmap bitmap = ((BitmapDrawable) imageVewChild.getDrawable()).getBitmap();
-            // TODO: 8/12/2016 capture the image name from file chooser and use it here
-            bitmaps.put("pic"+i+".jpg",bitmap);
-        }
-
-        return bitmaps;
-    }
 }

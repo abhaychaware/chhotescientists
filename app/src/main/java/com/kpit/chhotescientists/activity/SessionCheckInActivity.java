@@ -1,11 +1,14 @@
 package com.kpit.chhotescientists.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SessionCheckInActivity extends AppCompatActivity implements ResultViewContainerReceiver {
@@ -225,13 +229,22 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         // Get an image from the chooser, and add it to the corresponding media button's ImageView
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
+            String filename = getFileNameFromUri(uri);
+
+            if (TextUtils.isEmpty(filename)) {
+                // If the filename was invalid, fall back to the current
+                //   time in milliseconds as the filename.
+                long currentTimeMilliseconds = new Date().getTime();
+                filename = Long.toString(currentTimeMilliseconds);
+            }
+
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 // If there is a mediaButtonContainer awaiting a result,
                 //  then put this result in that container's ImageView.
                 if (this.mediaButtonContainerAwaitingResult != null) {
-                    this.mediaButtonContainerAwaitingResult.addImage(bitmap);
+                    this.mediaButtonContainerAwaitingResult.addNamedImage(filename, bitmap);
                     this.mediaButtonContainerAwaitingResult = null;
                 }
 
@@ -239,6 +252,35 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Try to extract the filename from a URI.
+     * See http://stackoverflow.com/a/25005243/5054197
+     *
+     * @param uri The URI whose filename we want to find
+     * @return The filename from a URI's file
+     */
+    private String getFileNameFromUri(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
     @Override
