@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.activity.SessionCheckInActivity;
@@ -45,17 +46,18 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     public void onBindViewHolder(final SessionViewHolder holder, int position) {
         Session item = items.get(position);
         holder.getItemLayout().setVisibility(View.GONE);
-        holder.getTitleTextView().setText(item.date);
+        holder.getTitleTextView().setText(item.getDateString());
         holder.getSubtitleTextView().setText("Theme : "+item.theme+", in "+item.location);
 
         // Create buttons for the questions:
         for (final SessionEvent event : item.events) {
-            Button eventLinkButton = new Button(context);
-            eventLinkButton.setText(event.title);
+            TextView eventLink = (TextView) LayoutInflater.from(context)
+                    .inflate(R.layout.button_questionnaire_link, holder.getItemLayout(), false);
+            eventLink.setText(event.title);
 
             // Set an event's button to open the questionnaire/check-in activity
             //  and pass in the parcelable Event object.
-            eventLinkButton.setOnClickListener(new View.OnClickListener() {
+            eventLink.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent sessionCheckInIntent = new Intent();
@@ -65,7 +67,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
                 }
             });
 
-            holder.getItemLayout().addView(eventLinkButton);
+            holder.getItemLayout().addView(eventLink);
         }
 
         // Animate the dropdown arrow depending on whether the card is expanded or collapsed:

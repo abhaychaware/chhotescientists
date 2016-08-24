@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,9 +24,11 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     private MediaButton mediaButton;
     private String bitmapBase64;
+    Map<String, Bitmap> namedBitmapsMap;
 
     public ResultMediaButtonContainer(MediaButton mediaButton) {
         this.mediaButton = mediaButton;
+        this.namedBitmapsMap = new HashMap<>();
     }
 
     @Override
@@ -42,9 +45,11 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
         return this.mediaButton;
     }
 
-    public void addImage(Bitmap imageBitmap) {
+    public void addNamedImage(String filename, Bitmap imageBitmap) {
         this.mediaButton.addImageBitmap(imageBitmap);
         this.bitmapBase64 = this.bitmapToBase64(imageBitmap);
+
+        this.namedBitmapsMap.put(filename, imageBitmap);
     }
 
     public void setMediaButtonOnClick(View.OnClickListener onClickListener) {
@@ -79,16 +84,15 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     @Override
     public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {
         ArrayList<JSONObject> jsonObjects = new ArrayList<>();
-//        for (Bitmap bitmap : mediaButton.getImageBitmaps()) {
-        Map map = mediaButton.getImageBitmaps();
-        Set<String> keys = map.keySet();
-        for (String key : keys) {
-            Bitmap bitmap = (Bitmap)map.get(key);
+
+        Set<String> filenameKeys = this.namedBitmapsMap.keySet();
+        for (String filename : filenameKeys) {
+            Bitmap bitmap = this.namedBitmapsMap.get(filename);
 
             JSONObject dataObject = new JSONObject();
             dataObject.put("event_type_id", eventTypeId);
             dataObject.put("schedule_id", scheduleId);
-            dataObject.put("filename", key);
+            dataObject.put("filename", filename);
 
             dataObject.put("media_type", "photo"); // TODO videos...
 
