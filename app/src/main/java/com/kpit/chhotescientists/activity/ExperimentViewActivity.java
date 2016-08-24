@@ -97,7 +97,6 @@ public class ExperimentViewActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view, int position) {
 
-                Toast.makeText(getApplicationContext(),"Loading ...",Toast.LENGTH_LONG).show();
                 ExperimentVO item = feedItems.get(position);
 
                 Intent i = new Intent(ExperimentViewActivity.this,
