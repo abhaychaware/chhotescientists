@@ -2,10 +2,11 @@ package com.kpit.chhotescientists.model;
 
 import android.app.Activity;
 import android.os.Parcel;
-import android.widget.ToggleButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.kpit.chhotescientists.R;
-import com.kpit.chhotescientists.model.view_containers.ResultToggleButtonContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultRadioGroupContainer;
 import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
 
 /**
@@ -24,11 +25,20 @@ public class BooleanQuestion extends CheckInQuestion {
 
     @Override
     public ResultViewContainer getQuestionViewContainer(Activity activity) {
-        ToggleButton toggleButton = new ToggleButton(activity);
-        toggleButton.setTextOff(activity.getString(R.string.no));
-        toggleButton.setTextOn(activity.getString(R.string.yes));
-        toggleButton.setChecked(false);
-        return new ResultToggleButtonContainer(toggleButton);
+        RadioGroup radioGroup = new RadioGroup(activity);
+
+        RadioButton yesButton = new RadioButton(activity);
+        yesButton.setId(R.id.radio_button_yes);
+        RadioButton noButton = new RadioButton(activity);
+        noButton.setId(R.id.radio_button_no);
+
+        yesButton.setText(activity.getString(R.string.yes));
+        noButton.setText(activity.getString(R.string.no));
+
+        radioGroup.addView(yesButton);
+        radioGroup.addView(noButton);
+
+        return new ResultRadioGroupContainer(radioGroup);
     }
 
     @Override
