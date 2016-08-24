@@ -1,6 +1,8 @@
 package com.kpit.chhotescientists.model.view_containers;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.View;
 
@@ -47,9 +49,22 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     public void addNamedImage(String filename, Bitmap imageBitmap) {
-        this.mediaButton.addImageBitmap(imageBitmap);
-
+        // Encode full-size bitmap and store in the map, keyed by filename.
         this.namedBitmapsMap.put(filename, bitmapToBase64(imageBitmap));
+
+        // Now, resize the bitmap for display (for performance)
+        int rawHeight = imageBitmap.getHeight();
+        int rawWidth = imageBitmap.getWidth();
+
+        // Calculate the scale factor to make the width be 300:
+        float scale = 300f / rawWidth;
+
+        int targetHeight = Math.round(scale * rawHeight);
+        int targetWidth = 300;
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, targetWidth, targetHeight, false);
+
+        this.mediaButton.addImageBitmap(scaledBitmap);
     }
 
     public void setMediaButtonOnClick(View.OnClickListener onClickListener) {
