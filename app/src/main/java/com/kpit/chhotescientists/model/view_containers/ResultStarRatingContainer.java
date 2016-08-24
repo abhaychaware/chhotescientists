@@ -1,11 +1,7 @@
-package com.kpit.chhotescientists.model.result_views;
+package com.kpit.chhotescientists.model.view_containers;
 
 import android.view.View;
 import android.widget.RatingBar;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * See parent class ResultViewContainer for documentation.
@@ -19,7 +15,7 @@ public class ResultStarRatingContainer extends ResultViewContainer {
     }
 
     @Override
-    public String getResult() {
+    public String getStringResult() {
         return Integer.toString((int) ratingBar.getRating());
     }
 

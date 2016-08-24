@@ -1,14 +1,12 @@
 package com.kpit.chhotescientists.model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Parcel;
-import android.view.View;
 import android.widget.ToggleButton;
 
 import com.kpit.chhotescientists.R;
-import com.kpit.chhotescientists.model.result_views.ResultToggleButtonContainer;
-import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultToggleButtonContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
 
 /**
  * See parent CheckInQuestion for documentation.

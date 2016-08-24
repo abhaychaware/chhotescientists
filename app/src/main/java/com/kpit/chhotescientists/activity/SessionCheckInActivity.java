@@ -14,7 +14,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +26,8 @@ import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.interfaces.ResultViewContainerReceiver;
 import com.kpit.chhotescientists.model.CheckInQuestion;
 import com.kpit.chhotescientists.model.SessionEvent;
-import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
-import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultMediaButtonContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
 import com.kpit.chhotescientists.util.AppController;
 import com.kpit.chhotescientists.util.ConnectionDetector;
 

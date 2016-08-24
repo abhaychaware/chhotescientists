@@ -1,4 +1,4 @@
-package com.kpit.chhotescientists.model.result_views;
+package com.kpit.chhotescientists.model.view_containers;
 
 import android.graphics.Bitmap;
 import android.util.Base64;
@@ -23,7 +23,6 @@ import java.util.Set;
 public class ResultMediaButtonContainer extends ResultViewContainer {
 
     private MediaButton mediaButton;
-    private String bitmapBase64;
     Map<String, String> namedBitmapsMap;
 
     public ResultMediaButtonContainer(MediaButton mediaButton) {
@@ -32,8 +31,14 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     @Override
-    public String getResult() {
-        return null;
+    public String getStringResult() {
+        // Don't send actual media data here, just send a yes/no whether it exists.
+        //  Media is sent to a different endpoint.
+        if (namedBitmapsMap != null && namedBitmapsMap.size() > 0) {
+            return "Yes";
+        } else {
+            return "No";
+        }
     }
 
     @Override
@@ -43,8 +48,7 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     public void addNamedImage(String filename, Bitmap imageBitmap) {
         this.mediaButton.addImageBitmap(imageBitmap);
-        this.bitmapBase64 = this.bitmapToBase64(imageBitmap);
-        
+
         this.namedBitmapsMap.put(filename, bitmapToBase64(imageBitmap));
     }
 
@@ -57,24 +61,6 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.NO_WRAP);
-    }
-
-    @Override
-    public JSONArray addContentsToTextJsonArray(JSONArray dataToSend) throws JSONException {
-        JSONObject viewContentsJson = getBaseJsonDataToSend();
-
-        // Don't send actual media data here, just send a yes/no whether it exists.
-        //  Media is sent to a different endpoint.
-
-        if (bitmapBase64 != null) {
-            viewContentsJson.put("response", "Yes");
-        } else {
-            viewContentsJson.put("response", "No");
-        }
-
-        dataToSend.put(viewContentsJson);
-
-        return dataToSend;
     }
 
     @Override

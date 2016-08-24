@@ -1,8 +1,6 @@
 package com.kpit.chhotescientists.interfaces;
 
-import android.widget.ImageView;
-
-import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultMediaButtonContainer;
 
 /**
  * An interface used to send views between Question's views and their parent activity.

@@ -1,4 +1,4 @@
-package com.kpit.chhotescientists.model.result_views;
+package com.kpit.chhotescientists.model.view_containers;
 
 import android.view.View;
 
@@ -25,7 +25,7 @@ public abstract class ResultViewContainer {
 
     private CheckInQuestion question;
 
-    public abstract String getResult();
+    public abstract String getStringResult();
 
     public abstract View getView();
 
@@ -38,7 +38,7 @@ public abstract class ResultViewContainer {
      */
     public JSONArray addContentsToTextJsonArray(JSONArray dataToSend) throws JSONException {
         JSONObject viewContentsJson = getBaseJsonDataToSend();
-        viewContentsJson.put("response", getResult());
+        viewContentsJson.put("response", getStringResult());
 
         dataToSend.put(viewContentsJson);
 

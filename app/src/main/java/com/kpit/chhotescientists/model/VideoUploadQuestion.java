@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Parcel;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.kpit.chhotescientists.activity.SessionCheckInActivity;
-import com.kpit.chhotescientists.model.result_views.ResultMediaButtonContainer;
-import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultMediaButtonContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
 import com.kpit.chhotescientists.view.MediaButton;
 
 /**

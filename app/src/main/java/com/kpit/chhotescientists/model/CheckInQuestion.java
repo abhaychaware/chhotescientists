@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
 import com.kpit.chhotescientists.interfaces.ResultViewContainerReceiver;
-import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
 
 /**
  * A model to be constructed (with GSON) from the server response.
