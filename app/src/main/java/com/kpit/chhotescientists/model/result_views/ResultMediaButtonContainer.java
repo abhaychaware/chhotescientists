@@ -24,7 +24,7 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     private MediaButton mediaButton;
     private String bitmapBase64;
-    Map<String, Bitmap> namedBitmapsMap;
+    Map<String, String> namedBitmapsMap;
 
     public ResultMediaButtonContainer(MediaButton mediaButton) {
         this.mediaButton = mediaButton;
@@ -33,11 +33,7 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
     @Override
     public String getResult() {
-        if (bitmapBase64 != null) {
-            return bitmapBase64;
-        } else {
-            return "";
-        }
+        return null;
     }
 
     @Override
@@ -48,8 +44,8 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     public void addNamedImage(String filename, Bitmap imageBitmap) {
         this.mediaButton.addImageBitmap(imageBitmap);
         this.bitmapBase64 = this.bitmapToBase64(imageBitmap);
-
-        this.namedBitmapsMap.put(filename, imageBitmap);
+        
+        this.namedBitmapsMap.put(filename, bitmapToBase64(imageBitmap));
     }
 
     public void setMediaButtonOnClick(View.OnClickListener onClickListener) {
@@ -87,7 +83,7 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
         Set<String> filenameKeys = this.namedBitmapsMap.keySet();
         for (String filename : filenameKeys) {
-            Bitmap bitmap = this.namedBitmapsMap.get(filename);
+            String encodedBitmap = this.namedBitmapsMap.get(filename);
 
             JSONObject dataObject = new JSONObject();
             dataObject.put("event_type_id", eventTypeId);
@@ -96,7 +92,6 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
             dataObject.put("media_type", "photo"); // TODO videos...
 
-            String encodedBitmap = bitmapToBase64(bitmap);
             dataObject.put("filebindata", encodedBitmap);
 
             JSONArray dataWrapper = new JSONArray();
