@@ -1,14 +1,12 @@
 package com.kpit.chhotescientists.model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Parcel;
 import android.text.InputType;
-import android.view.View;
 import android.widget.EditText;
 
-import com.kpit.chhotescientists.model.result_views.ResultEditTextContainer;
-import com.kpit.chhotescientists.model.result_views.ResultViewContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultEditTextContainer;
+import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
 
 /**
  * See parent CheckInQuestion for documentation.

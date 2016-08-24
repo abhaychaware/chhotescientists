@@ -1,6 +1,8 @@
-package com.kpit.chhotescientists.model.result_views;
+package com.kpit.chhotescientists.model.view_containers;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.View;
 
@@ -23,8 +25,7 @@ import java.util.Set;
 public class ResultMediaButtonContainer extends ResultViewContainer {
 
     private MediaButton mediaButton;
-    private String bitmapBase64;
-    Map<String, Bitmap> namedBitmapsMap;
+    Map<String, String> namedBitmapsMap;
 
     public ResultMediaButtonContainer(MediaButton mediaButton) {
         this.mediaButton = mediaButton;
@@ -32,11 +33,13 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     @Override
-    public String getResult() {
-        if (bitmapBase64 != null) {
-            return bitmapBase64;
+    public String getStringResult() {
+        // Don't send actual media data here, just send a yes/no whether it exists.
+        //  Media is sent to a different endpoint.
+        if (namedBitmapsMap != null && namedBitmapsMap.size() > 0) {
+            return "Yes";
         } else {
-            return "";
+            return "No";
         }
     }
 
@@ -46,10 +49,22 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     public void addNamedImage(String filename, Bitmap imageBitmap) {
-        this.mediaButton.addImageBitmap(imageBitmap);
-        this.bitmapBase64 = this.bitmapToBase64(imageBitmap);
+        // Encode full-size bitmap and store in the map, keyed by filename.
+        this.namedBitmapsMap.put(filename, bitmapToBase64(imageBitmap));
 
-        this.namedBitmapsMap.put(filename, imageBitmap);
+        // Now, resize the bitmap for display (for performance)
+        int rawHeight = imageBitmap.getHeight();
+        int rawWidth = imageBitmap.getWidth();
+
+        // Calculate the scale factor to make the width be 300:
+        float scale = 300f / rawWidth;
+
+        int targetHeight = Math.round(scale * rawHeight);
+        int targetWidth = 300;
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, targetWidth, targetHeight, false);
+
+        this.mediaButton.addImageBitmap(scaledBitmap);
     }
 
     public void setMediaButtonOnClick(View.OnClickListener onClickListener) {
@@ -64,30 +79,12 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
     }
 
     @Override
-    public JSONArray addContentsToTextJsonArray(JSONArray dataToSend) throws JSONException {
-        JSONObject viewContentsJson = getBaseJsonDataToSend();
-
-        // Don't send actual media data here, just send a yes/no whether it exists.
-        //  Media is sent to a different endpoint.
-
-        if (bitmapBase64 != null) {
-            viewContentsJson.put("response", "Yes");
-        } else {
-            viewContentsJson.put("response", "No");
-        }
-
-        dataToSend.put(viewContentsJson);
-
-        return dataToSend;
-    }
-
-    @Override
     public List<JSONObject> getMediaJsonsToUpload(String eventTypeId, String scheduleId) throws JSONException {
         ArrayList<JSONObject> jsonObjects = new ArrayList<>();
 
         Set<String> filenameKeys = this.namedBitmapsMap.keySet();
         for (String filename : filenameKeys) {
-            Bitmap bitmap = this.namedBitmapsMap.get(filename);
+            String encodedBitmap = this.namedBitmapsMap.get(filename);
 
             JSONObject dataObject = new JSONObject();
             dataObject.put("event_type_id", eventTypeId);
@@ -96,7 +93,6 @@ public class ResultMediaButtonContainer extends ResultViewContainer {
 
             dataObject.put("media_type", "photo"); // TODO videos...
 
-            String encodedBitmap = bitmapToBase64(bitmap);
             dataObject.put("filebindata", encodedBitmap);
 
             JSONArray dataWrapper = new JSONArray();

@@ -1,5 +1,6 @@
-package com.kpit.chhotescientists.model.result_views;
+package com.kpit.chhotescientists.model.view_containers;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.kpit.chhotescientists.model.CheckInQuestion;
@@ -25,7 +26,7 @@ public abstract class ResultViewContainer {
 
     private CheckInQuestion question;
 
-    public abstract String getResult();
+    public abstract String getStringResult();
 
     public abstract View getView();
 
@@ -37,10 +38,14 @@ public abstract class ResultViewContainer {
      * @throws JSONException
      */
     public JSONArray addContentsToTextJsonArray(JSONArray dataToSend) throws JSONException {
-        JSONObject viewContentsJson = getBaseJsonDataToSend();
-        viewContentsJson.put("response", getResult());
+        String stringResult = getStringResult();
 
-        dataToSend.put(viewContentsJson);
+        // Only send the response if it's not empty / nonzero
+        if (!TextUtils.isEmpty(stringResult) && !stringResult.equals("0")) {
+            JSONObject viewContentsJson = getBaseJsonDataToSend();
+            viewContentsJson.put("response", getStringResult());
+            dataToSend.put(viewContentsJson);
+        }
 
         return dataToSend;
     }
