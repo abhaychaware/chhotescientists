@@ -96,7 +96,7 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
                     try {
                         // Upload text responses to questions:
                         JSONObject questionsTextJson = assembleTextJson(event);
-                        Log.d("Text Response", questionsTextJson.toString());
+                        Log.d("SessionCheckInActivity", "Text response: " + questionsTextJson.toString());
                         uploadTextResponses(questionsTextJson);
 
                         // Also upload any media if possible
