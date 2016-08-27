@@ -28,6 +28,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
     List<Session> items;
     Context context;
+    SessionViewHolder currentExpandedViewHolder;
 
     public SessionAdapter(List<Session> items, Context context) {
         this.items = items;
@@ -115,19 +116,36 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
             public void onClick(View v) {
                 if (holder.itemLayout.getVisibility() == View.VISIBLE) {
                     holder.expandArrow.startAnimation(rotateDownAnimation);
+
+                    // Collapse the card:
                     holder.itemLayout.setVisibility(View.GONE);
                 } else {
-                    //hide all other cards
-                    hideAllCards();
+                    collapseCurrentExpandedCard();
+
                     holder.expandArrow.startAnimation(rotateUpAnimation);
+
+                    // Expand the card:
                     holder.itemLayout.setVisibility(View.VISIBLE);
+
+                    // Keep a reference to this card, since it's expanded now
+                    currentExpandedViewHolder = holder;
                 }
             }
         });
     }
 
-    private void hideAllCards() {
-        //TODO write function to hide all the cards
+    /**
+     * Collapse the currently expanded card to make room
+     *  for another card to be expanded.
+     */
+    private void collapseCurrentExpandedCard() {
+        if (this.currentExpandedViewHolder != null) {
+            final Animation rotateDownAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_flip_down);
+            rotateDownAnimation.setFillAfter(true);
+
+            this.currentExpandedViewHolder.expandArrow.startAnimation(rotateDownAnimation);
+            this.currentExpandedViewHolder.itemLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
