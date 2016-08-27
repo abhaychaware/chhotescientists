@@ -25,6 +25,7 @@
             android:text="Jnana Prabodhini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             style="@style/Base.TextAppearance.AppCompat.Large"
             android:id="@+id/title_text"/>
 
