@@ -22,16 +22,36 @@
         android:animateLayoutChanges="true">
 
         <TextView
+            android:text="Jnana Prabodhini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Base.TextAppearance.AppCompat.Large"
             android:id="@+id/title_text"/>
 
         <TextView
+            android:text="August 31, 3:00pm"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/ic_today_black_24dp"
+            android:drawableTint="@color/blue"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:id="@+id/date_text"/>
+
+        <TextView
+            android:text="Theme: Pressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="6dp"
-            android:id="@+id/subtitle_text"/>
+            android:textStyle="bold"
+            android:id="@+id/theme_text"/>
+
+        <TextView
+            android:text="31 students expected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:id="@+id/expected_student_count_text"/>
 
         <LinearLayout
             android:orientation="vertical"

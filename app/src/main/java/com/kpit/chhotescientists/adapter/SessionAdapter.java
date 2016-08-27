@@ -3,12 +3,12 @@ package com.kpit.chhotescientists.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.kpit.chhotescientists.R;
@@ -45,14 +45,48 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     @Override
     public void onBindViewHolder(final SessionViewHolder holder, int position) {
         Session item = items.get(position);
-        holder.getItemLayout().setVisibility(View.GONE);
-        holder.getTitleTextView().setText(item.getDateString());
-        holder.getSubtitleTextView().setText("Theme : "+item.theme+", in "+item.location);
+        holder.itemLayout.setVisibility(View.GONE);
+
+        // Set location as title
+        if (!TextUtils.isEmpty(item.location)) {
+            holder.titleTextView.setVisibility(View.VISIBLE);
+            holder.titleTextView.setText(item.location);
+        } else {
+            holder.titleTextView.setVisibility(View.GONE);
+        }
+
+        // Set date textview
+        if (!TextUtils.isEmpty(item.getDateString())) {
+            holder.dateTextView.setVisibility(View.VISIBLE);
+            holder.dateTextView.setText(item.getDateString());
+        } else {
+            holder.dateTextView.setVisibility(View.GONE);
+        }
+
+        // Set theme text
+        if (!TextUtils.isEmpty(item.theme)) {
+            holder.themeTextView.setVisibility(View.VISIBLE);
+            holder.themeTextView.setText(
+                    context.getString(R.string.theme_x, item.theme)
+            );
+        } else {
+            holder.themeTextView.setVisibility(View.GONE);
+        }
+
+        // Set expected students text
+        if (!TextUtils.isEmpty(item.expectedStudentCount)) {
+            holder.expectedStudentCountTextView.setVisibility(View.VISIBLE);
+            holder.expectedStudentCountTextView.setText(
+                    context.getString(R.string.n_students_expected, item.expectedStudentCount)
+            );
+        } else {
+            holder.expectedStudentCountTextView.setVisibility(View.GONE);
+        }
 
         // Create buttons for the questions:
         for (final SessionEvent event : item.events) {
             TextView eventLink = (TextView) LayoutInflater.from(context)
-                    .inflate(R.layout.button_questionnaire_link, holder.getItemLayout(), false);
+                    .inflate(R.layout.button_questionnaire_link, holder.itemLayout, false);
             eventLink.setText(event.title);
 
             // Set an event's button to open the questionnaire/check-in activity
@@ -67,7 +101,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
                 }
             });
 
-            holder.getItemLayout().addView(eventLink);
+            holder.itemLayout.addView(eventLink);
         }
 
         // Animate the dropdown arrow depending on whether the card is expanded or collapsed:
@@ -79,14 +113,14 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.getItemLayout().getVisibility() == View.VISIBLE) {
+                if (holder.itemLayout.getVisibility() == View.VISIBLE) {
                     holder.expandArrow.startAnimation(rotateDownAnimation);
-                    holder.getItemLayout().setVisibility(View.GONE);
+                    holder.itemLayout.setVisibility(View.GONE);
                 } else {
                     //hide all other cards
                     hideAllCards();
                     holder.expandArrow.startAnimation(rotateUpAnimation);
-                    holder.getItemLayout().setVisibility(View.VISIBLE);
+                    holder.itemLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
