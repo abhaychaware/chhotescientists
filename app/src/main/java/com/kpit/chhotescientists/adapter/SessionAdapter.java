@@ -2,6 +2,7 @@ package com.kpit.chhotescientists.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -45,47 +46,16 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
     @Override
     public void onBindViewHolder(final SessionViewHolder holder, int position) {
-        Session item = items.get(position);
+        final Session session = items.get(position);
         holder.itemLayout.setVisibility(View.GONE);
 
-        // Set location as title
-        if (!TextUtils.isEmpty(item.location)) {
-            holder.titleTextView.setVisibility(View.VISIBLE);
-            holder.titleTextView.setText(item.location);
-        } else {
-            holder.titleTextView.setVisibility(View.GONE);
-        }
-
-        // Set date textview
-        if (!TextUtils.isEmpty(item.getDateString())) {
-            holder.dateTextView.setVisibility(View.VISIBLE);
-            holder.dateTextView.setText(item.getDateString());
-        } else {
-            holder.dateTextView.setVisibility(View.GONE);
-        }
-
-        // Set theme text
-        if (!TextUtils.isEmpty(item.theme)) {
-            holder.themeTextView.setVisibility(View.VISIBLE);
-            holder.themeTextView.setText(
-                    context.getString(R.string.theme_x, item.theme)
-            );
-        } else {
-            holder.themeTextView.setVisibility(View.GONE);
-        }
-
-        // Set expected students text
-        if (!TextUtils.isEmpty(item.expectedStudentCount)) {
-            holder.expectedStudentCountTextView.setVisibility(View.VISIBLE);
-            holder.expectedStudentCountTextView.setText(
-                    context.getString(R.string.n_students_expected, item.expectedStudentCount)
-            );
-        } else {
-            holder.expectedStudentCountTextView.setVisibility(View.GONE);
-        }
+        setDetailText(holder.titleTextView, session.location);
+        setDetailText(holder.dateTextView, session.date);
+        setDetailText(holder.themeTextView, session.theme, R.string.theme_x);
+        setDetailText(holder.expectedStudentCountTextView, session.expectedStudentCount, R.string.n_students_expected);
 
         // Create buttons for the questions:
-        for (final SessionEvent event : item.events) {
+        for (final SessionEvent event : session.events) {
             TextView eventLink = (TextView) LayoutInflater.from(context)
                     .inflate(R.layout.button_questionnaire_link, holder.itemLayout, false);
             eventLink.setText(event.title);
@@ -98,6 +68,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
                     Intent sessionCheckInIntent = new Intent();
                     sessionCheckInIntent.setClass(context, SessionCheckInActivity.class);
                     sessionCheckInIntent.putExtra(SessionCheckInActivity.EVENT_KEY, event);
+                    sessionCheckInIntent.putExtra(SessionCheckInActivity.SESSION_KEY, session);
                     context.startActivity(sessionCheckInIntent);
                 }
             });
@@ -115,23 +86,39 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
             @Override
             public void onClick(View v) {
                 if (holder.itemLayout.getVisibility() == View.VISIBLE) {
-                    holder.expandArrow.startAnimation(rotateDownAnimation);
 
                     // Collapse the card:
+                    holder.expandArrow.startAnimation(rotateDownAnimation);
                     holder.itemLayout.setVisibility(View.GONE);
                 } else {
                     collapseCurrentExpandedCard();
 
-                    holder.expandArrow.startAnimation(rotateUpAnimation);
-
                     // Expand the card:
+                    holder.expandArrow.startAnimation(rotateUpAnimation);
                     holder.itemLayout.setVisibility(View.VISIBLE);
 
-                    // Keep a reference to this card, since it's expanded now
+                    // Keep a reference to this card, so we can collapse it when we open a different card
                     currentExpandedViewHolder = holder;
                 }
             }
         });
+    }
+
+    private void setDetailText(TextView textView, String text) {
+        if (textView != null && !TextUtils.isEmpty(text)) {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(text);
+        } else if (textView != null) {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Helper method for formatting strings and then setting detail text.
+     */
+    private void setDetailText(TextView textView, String formatStringParam, @StringRes int formatStringId) {
+        String formattedText = context.getString(formatStringId, formatStringParam);
+        setDetailText(textView, formattedText);
     }
 
     /**

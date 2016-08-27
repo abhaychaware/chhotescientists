@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.interfaces.ResultViewContainerReceiver;
 import com.kpit.chhotescientists.model.CheckInQuestion;
+import com.kpit.chhotescientists.model.Session;
 import com.kpit.chhotescientists.model.SessionEvent;
 import com.kpit.chhotescientists.model.view_containers.ResultMediaButtonContainer;
 import com.kpit.chhotescientists.model.view_containers.ResultViewContainer;
@@ -43,6 +45,7 @@ import java.util.List;
 public class SessionCheckInActivity extends AppCompatActivity implements ResultViewContainerReceiver {
 
     public static final String EVENT_KEY = "EVENT";
+    public static final String SESSION_KEY = "SESSION";
     public static final int PICK_IMAGE_REQUEST = 1;
 
     private List<ResultViewContainer> viewContainers;
@@ -55,6 +58,10 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         setContentView(R.layout.activity_session_check_in);
 
         final SessionEvent event = getIntent().getParcelableExtra(EVENT_KEY);
+        final Session session = getIntent().getParcelableExtra(SESSION_KEY);
+
+        View sessionDetailsView = findViewById(R.id.session_details);
+        this.fillInSessionDetailView(session, sessionDetailsView);
 
         viewContainers = new ArrayList<>();
 
@@ -120,6 +127,39 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         buttonParams.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.space_16dp);
 
         questionsLayout.addView(submitButton, buttonParams);
+    }
+
+    private void fillInSessionDetailView(Session session, View sessionDetailsView) {
+        if (session != null && sessionDetailsView != null) {
+            sessionDetailsView.setVisibility(View.VISIBLE);
+
+            TextView titleTextView = (TextView) findViewById(R.id.title_text);
+            TextView dateTextView = (TextView) findViewById(R.id.date_text);
+            TextView themeTextView = (TextView) findViewById(R.id.theme_text);
+            TextView expectedStudentCountTextView = (TextView) findViewById(R.id.expected_student_count_text);
+
+            setDetailText(titleTextView, session.location);
+            setDetailText(dateTextView, session.getDateString());
+            setDetailText(themeTextView, session.theme, R.string.theme_x);
+            setDetailText(expectedStudentCountTextView, session.expectedStudentCount, R.string.n_students_expected);
+
+        } else if (sessionDetailsView != null) {
+            sessionDetailsView.setVisibility(View.GONE);
+        }
+    }
+
+    private void setDetailText(TextView textView, String text) {
+        if (textView != null && !TextUtils.isEmpty(text)) {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(text);
+        } else if (textView != null) {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
+    private void setDetailText(TextView textView, String formatStringParam, @StringRes int formatStringId) {
+        String formattedText = getString(formatStringId, formatStringParam);
+        setDetailText(textView, formattedText);
     }
 
     /**

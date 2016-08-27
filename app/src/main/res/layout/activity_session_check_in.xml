@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/session_details"
             android:orientation="vertical"
             android:background="@color/colorAccent"
             android:padding="16dp"
