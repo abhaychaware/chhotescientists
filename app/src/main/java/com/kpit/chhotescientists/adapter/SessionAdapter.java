@@ -50,7 +50,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         holder.itemLayout.setVisibility(View.GONE);
 
         setDetailText(holder.titleTextView, session.location);
-        setDetailText(holder.dateTextView, session.date);
+        setDetailText(holder.dateTextView, session.getDateString());
         setDetailText(holder.themeTextView, session.theme, R.string.theme_x);
         setDetailText(holder.expectedStudentCountTextView, session.expectedStudentCount, R.string.n_students_expected);
 
