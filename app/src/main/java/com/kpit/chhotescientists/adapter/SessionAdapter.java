@@ -1,8 +1,12 @@
 package com.kpit.chhotescientists.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.StringRes;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,12 +32,12 @@ import java.util.List;
 public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
     List<Session> items;
-    Context context;
+    Activity activity;
     SessionViewHolder currentExpandedViewHolder;
 
-    public SessionAdapter(List<Session> items, Context context) {
+    public SessionAdapter(List<Session> items, Activity activity) {
         this.items = items;
-        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
         // Create buttons for the questions:
         for (final SessionEvent event : session.events) {
-            TextView eventLink = (TextView) LayoutInflater.from(context)
+            TextView eventLink = (TextView) LayoutInflater.from(activity)
                     .inflate(R.layout.button_questionnaire_link, holder.itemLayout, false);
             eventLink.setText(event.title);
 
@@ -66,10 +70,22 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent sessionCheckInIntent = new Intent();
-                    sessionCheckInIntent.setClass(context, SessionCheckInActivity.class);
+                    sessionCheckInIntent.setClass(activity, SessionCheckInActivity.class);
                     sessionCheckInIntent.putExtra(SessionCheckInActivity.EVENT_KEY, event);
                     sessionCheckInIntent.putExtra(SessionCheckInActivity.SESSION_KEY, session);
-                    context.startActivity(sessionCheckInIntent);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        // Use material transition with these shared elements between activities.
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                                Pair.create((View) holder.titleTextView, activity.getString(R.string.session_title_transition)),
+                                Pair.create((View) holder.dateTextView, activity.getString(R.string.session_date_transition)),
+                                Pair.create((View) holder.themeTextView, activity.getString(R.string.session_theme_transition)),
+                                Pair.create((View) holder.expectedStudentCountTextView, activity.getString(R.string.expected_student_count_transition))
+                        );
+                        activity.startActivity(sessionCheckInIntent, options.toBundle());
+                    } else {
+                        activity.startActivity(sessionCheckInIntent);
+                    }
                 }
             });
 
@@ -77,9 +93,9 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         }
 
         // Animate the dropdown arrow depending on whether the card is expanded or collapsed:
-        final Animation rotateUpAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_flip_up);
+        final Animation rotateUpAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate_flip_up);
         rotateUpAnimation.setFillAfter(true);
-        final Animation rotateDownAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_flip_down);
+        final Animation rotateDownAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate_flip_down);
         rotateDownAnimation.setFillAfter(true);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +133,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
      * Helper method for formatting strings and then setting detail text.
      */
     private void setDetailText(TextView textView, String formatStringParam, @StringRes int formatStringId) {
-        String formattedText = context.getString(formatStringId, formatStringParam);
+        String formattedText = activity.getString(formatStringId, formatStringParam);
         setDetailText(textView, formattedText);
     }
 
@@ -127,7 +143,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
      */
     private void collapseCurrentExpandedCard() {
         if (this.currentExpandedViewHolder != null) {
-            final Animation rotateDownAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_flip_down);
+            final Animation rotateDownAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate_flip_down);
             rotateDownAnimation.setFillAfter(true);
 
             this.currentExpandedViewHolder.expandArrow.startAnimation(rotateDownAnimation);

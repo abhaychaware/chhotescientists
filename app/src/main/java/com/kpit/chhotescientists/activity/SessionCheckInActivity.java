@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.StringRes;
@@ -51,6 +52,10 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
     private List<ResultViewContainer> viewContainers;
 
     private ResultMediaButtonContainer mediaButtonContainerAwaitingResult;
+    private TextView titleTextView;
+    private TextView dateTextView;
+    private TextView themeTextView;
+    private TextView expectedStudentCountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +65,23 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
         final SessionEvent event = getIntent().getParcelableExtra(EVENT_KEY);
         final Session session = getIntent().getParcelableExtra(SESSION_KEY);
 
-        View sessionDetailsView = findViewById(R.id.session_details);
-        this.fillInSessionDetailView(session, sessionDetailsView);
-
         viewContainers = new ArrayList<>();
 
         final LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.check_in_questions_layout);
+        this.titleTextView = (TextView) findViewById(R.id.title_text);
+        this.dateTextView = (TextView) findViewById(R.id.date_text);
+        this.themeTextView = (TextView) findViewById(R.id.theme_text);
+        this.expectedStudentCountTextView = (TextView) findViewById(R.id.expected_student_count_text);
+
+        View sessionDetailsView = findViewById(R.id.session_details);
+        this.fillInSessionDetailView(session, sessionDetailsView);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            titleTextView.setTransitionName(getString(R.string.session_title_transition));
+            dateTextView.setTransitionName(getString(R.string.session_date_transition));
+            themeTextView.setTransitionName(getString(R.string.session_theme_transition));
+            expectedStudentCountTextView.setTransitionName(getString(R.string.expected_student_count_transition));
+        }
 
         // Each Question in the Event has a view for accepting the user's input (e.g. an EditText or a Toggle).
         //  Go through these Questions and add a TextView for the question's text, along with the Question's
@@ -132,11 +148,6 @@ public class SessionCheckInActivity extends AppCompatActivity implements ResultV
     private void fillInSessionDetailView(Session session, View sessionDetailsView) {
         if (session != null && sessionDetailsView != null) {
             sessionDetailsView.setVisibility(View.VISIBLE);
-
-            TextView titleTextView = (TextView) findViewById(R.id.title_text);
-            TextView dateTextView = (TextView) findViewById(R.id.date_text);
-            TextView themeTextView = (TextView) findViewById(R.id.theme_text);
-            TextView expectedStudentCountTextView = (TextView) findViewById(R.id.expected_student_count_text);
 
             setDetailText(titleTextView, session.location);
             setDetailText(dateTextView, session.getDateString());

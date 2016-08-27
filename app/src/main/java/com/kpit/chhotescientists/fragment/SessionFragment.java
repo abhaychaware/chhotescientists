@@ -190,7 +190,7 @@ public class SessionFragment extends Fragment implements
             }
         }
 
-        SessionAdapter sessionAdapter = new SessionAdapter(sessions, getContext());
+        SessionAdapter sessionAdapter = new SessionAdapter(sessions, getActivity());
         recyclerView.setAdapter(sessionAdapter);
 
         progressBar.setVisibility(View.GONE);
