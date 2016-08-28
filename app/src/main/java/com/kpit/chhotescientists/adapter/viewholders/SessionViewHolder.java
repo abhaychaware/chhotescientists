@@ -13,10 +13,14 @@ import com.kpit.chhotescientists.R;
 public class SessionViewHolder extends RecyclerView.ViewHolder {
 
     public View itemView;
+
+    public TextView titleTextView;
+    public TextView dateTextView;
+    public TextView themeTextView;
+    public TextView expectedStudentCountTextView;
+
+    public LinearLayout itemLayout;
     public View expandArrow;
-    TextView titleTextView;
-    TextView subtitleTextView;
-    LinearLayout itemLayout;
 
     public SessionViewHolder(View itemView) {
         super(itemView);
@@ -24,20 +28,11 @@ public class SessionViewHolder extends RecyclerView.ViewHolder {
         this.itemView = itemView;
 
         this.titleTextView = (TextView) itemView.findViewById(R.id.title_text);
-        this.subtitleTextView = (TextView) itemView.findViewById(R.id.subtitle_text);
+        this.dateTextView = (TextView) itemView.findViewById(R.id.date_text);
+        this.themeTextView = (TextView) itemView.findViewById(R.id.theme_text);
+        this.expectedStudentCountTextView = (TextView) itemView.findViewById(R.id.expected_student_count_text);
+
         this.itemLayout = (LinearLayout) itemView.findViewById(R.id.event_item_layout);
         this.expandArrow = itemView.findViewById(R.id.expand_arrow);
-    }
-
-    public LinearLayout getItemLayout() {
-        return this.itemLayout;
-    }
-
-    public TextView getTitleTextView() {
-        return titleTextView;
-    }
-
-    public TextView getSubtitleTextView() {
-        return subtitleTextView;
     }
 }

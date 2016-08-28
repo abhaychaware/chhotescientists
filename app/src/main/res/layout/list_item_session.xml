@@ -21,17 +21,7 @@
         android:padding="12dp"
         android:animateLayoutChanges="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat.Large"
-            android:id="@+id/title_text"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:id="@+id/subtitle_text"/>
+        <include layout="@layout/session_details" />
 
         <LinearLayout
             android:orientation="vertical"
