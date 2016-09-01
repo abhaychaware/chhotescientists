@@ -4,6 +4,10 @@ package com.kpit.chhotescientists.common;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Dnyaneshwar on 11/19/15.
  */
@@ -20,6 +24,7 @@ public class MyPreferences {
     private static final String USER_RESIDENCE = "user_area_of_residence";
     private static final String USER_CENTER = "user_nearest_cs_center";
     private static final String USER_NAME = "userNamePref";
+    private static final String THEMES = "themesPref";
     private Context context;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -122,4 +127,25 @@ public class MyPreferences {
         editor.putString(USER_CENTER, center);
         editor.commit();
     }
+
+    public String getThemes() {
+        return preferences.getString(THEMES, "");
+    }
+
+    public void setThemes(String themes) {
+        editor.putString(THEMES, themes);
+        editor.commit();
+    }
+
+    public String getExperiments(String key) {
+        return preferences.getString(key, "");
+    }
+
+    public void setExperiments(String key, String experiments) {
+            editor.remove(key);
+            editor.putString(key, experiments);
+            editor.commit();
+    }
+
+
 }

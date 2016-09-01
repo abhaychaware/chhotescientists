@@ -106,7 +106,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         } else {
             Toast.makeText(
                     UpdateProfileActivity.this,
-                    getString(R.string.no_internet_msg), Toast.LENGTH_SHORT).show();
+                    getString(R.string.no_internet_msg), Toast.LENGTH_LONG).show();
         }
 //init spinner with data
         initSpinnerCSCenters();
@@ -151,7 +151,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     Toast.makeText(
                             UpdateProfileActivity.this,
                             getString(R.string.no_internet_msg),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -206,7 +206,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             Toast.makeText(
                     UpdateProfileActivity.this,
                     getString(R.string.no_internet_msg),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_LONG).show();
         }
 
 

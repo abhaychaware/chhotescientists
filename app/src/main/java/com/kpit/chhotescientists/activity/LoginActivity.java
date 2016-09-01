@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(
                                 LoginActivity.this,
                                 getString(R.string.no_internet_msg),
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_LONG).show();
                     }
 
                 } else {

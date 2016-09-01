@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.adapter.CustomRecycleExperimentAdapter;
+import com.kpit.chhotescientists.common.MyPreferences;
 import com.kpit.chhotescientists.custom.DividerItemDecoration;
 import com.kpit.chhotescientists.pojo.CategoryVO;
 import com.kpit.chhotescientists.pojo.ExperimentVO;
@@ -55,16 +56,17 @@ public class ExperimentViewActivity extends AppCompatActivity implements
     private List<ExperimentVO> feedItems = new ArrayList<>();
     private RecyclerView recyclerView;
     private CustomRecycleExperimentAdapter mAdapter;
+    private MyPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experiment_view);
+        mPreferences = new MyPreferences(this);
 
         //enable back button on action bar
         getSupportActionBar().show();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         pBar = (ProgressBar) findViewById(R.id.progressBar2);
         txtNoNWMessage = (TextView) findViewById(R.id.textView);
@@ -173,17 +175,20 @@ public class ExperimentViewActivity extends AppCompatActivity implements
         if (!mSwipeLayout.isRefreshing())
             pBar.setVisibility(View.VISIBLE);
 
+        JSONObject query = null;
+
+        try {
+            query = assembleTextJson(rcvdCatID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("###", "Theme Query : " + query.toString());
+        final String queryKey = query.toString();
+
         if (ConnectionDetector.isConnectingToInternet(this)) {
 
             // making fresh volley request and getting json
             // JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, getString(R.string.get_selected_experiment).concat("?exp_cat=" + rcvdCatID), null, new Response.Listener<JSONObject>() {
-            JSONObject query = null;
-            try {
-                query = assembleTextJson(rcvdCatID);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.i("###", "Theme Query : " + query.toString());
             JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.POST, getString(R.string.get_theme_experiments), query, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -191,6 +196,7 @@ public class ExperimentViewActivity extends AppCompatActivity implements
                     // "Response: " + response.toString());
                     if (response != null) {
                         parseJsonFeed(response);
+                        mPreferences.setExperiments(queryKey, response.toString());
                     }
                 }
             }, new Response.ErrorListener() {
@@ -211,7 +217,22 @@ public class ExperimentViewActivity extends AppCompatActivity implements
             // Adding request to volley request queue
             AppController.getInstance().addToRequestQueue(jsonReq);
 
-        } else {
+        }
+        else if(mPreferences.getExperiments(queryKey)!="") {
+            JSONObject experiments;
+            try {
+                experiments = new JSONObject(mPreferences.getExperiments(queryKey));
+                parseJsonFeed(experiments);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                recyclerView.setVisibility(View.INVISIBLE);
+                pBar.setVisibility(View.INVISIBLE);
+                mSwipeLayout.setRefreshing(false);
+                txtNoNWMessage.setText("No data to display.");
+                txtNoNWMessage.setVisibility(View.VISIBLE);
+            }
+        }
+        else{
             recyclerView.setVisibility(View.INVISIBLE);
             pBar.setVisibility(View.INVISIBLE);
             mSwipeLayout.setRefreshing(false);
@@ -261,8 +282,12 @@ public class ExperimentViewActivity extends AppCompatActivity implements
                         item.setExpname(feedObj.getString("exp_name"));
                         item.setExpdescription(feedObj.getString("exp_description"));
                         item.setExpdescriptionShort(feedObj.getString("exp_description_short"));
-                        item.setExpicon(feedObj.getString("exp_icon_path"));
+                        if (ConnectionDetector.isConnectingToInternet(getApplicationContext())) {
+                            item.setExpicon(feedObj.getString("exp_icon_path"));
+                        }else {
+                            //item.setExpicon(getResources().getDrawable(R.drawable.ic_image_white_48dp));
 
+                        }
                         JSONArray arrJson = feedObj.getJSONArray("exp_image_path");
                         String[] arr=new String[arrJson.length()];
                         for(int k=0;k<arrJson.length();k++) {

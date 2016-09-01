@@ -82,7 +82,7 @@ public class ExperimentDetailActivity extends AppCompatActivity {
                 Toast.makeText(
                         ExperimentDetailActivity.this,
                         getString(R.string.no_internet_msg),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             }
         }
 

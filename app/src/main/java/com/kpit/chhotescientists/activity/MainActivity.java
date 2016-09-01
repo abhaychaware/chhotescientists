@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity
     //function to handle snackbar
     public void snackDisplay() {
         Snackbar snackbar = Snackbar
-                .make(viewPager, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
+                .make(viewPager, getString(R.string.offline_mode), Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -122,7 +122,10 @@ public class MainActivity extends AppCompatActivity
 
 
                         } else {
-
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    getString(R.string.no_internet_msg),
+                                    Toast.LENGTH_LONG).show();
                             snackDisplay();
                         }
 
@@ -138,15 +141,6 @@ public class MainActivity extends AppCompatActivity
         textView.setTextColor(Color.YELLOW);
 
         snackbar.show();
-    }
-
-    public void init() {
-        myPreferences.setUserId("1");
-        myPreferences.setUserFullname("Dnyaneshwar Kanpurne");
-        myPreferences.setUserMobile("9922969951");
-        myPreferences.setUserEmail("dkanpurne@gmail.com");
-        myPreferences.setUserResidence("Latur");
-        myPreferences.setUserCenter("Pune");
     }
 
     private void setupViewPager(ViewPager viewPager) {

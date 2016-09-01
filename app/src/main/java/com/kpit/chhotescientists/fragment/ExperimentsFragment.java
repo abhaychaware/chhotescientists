@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.activity.ExperimentViewActivity;
+import com.kpit.chhotescientists.activity.MainActivity;
 import com.kpit.chhotescientists.adapter.CustomRecycleCategoryAdapter;
 import com.kpit.chhotescientists.common.MyPreferences;
 import com.kpit.chhotescientists.custom.DividerItemDecoration;
@@ -56,6 +57,7 @@ public class ExperimentsFragment extends Fragment implements
     private RecyclerView recyclerView;
     TextView txtNoNWMessage;
     private GridLayoutManager lLayout;
+    private MyPreferences mPreferences;
 
     public ExperimentsFragment() {
         // Required empty public constructor
@@ -64,6 +66,7 @@ public class ExperimentsFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPreferences = new MyPreferences(this.getContext());
 
     }
 
@@ -150,6 +153,7 @@ public class ExperimentsFragment extends Fragment implements
 
         if (!mSwipeLayout.isRefreshing())
             pBar.setVisibility(View.VISIBLE);
+        Log.i(getTag(),"Fetching from preferences :"+mPreferences.getThemes());
 
         if (ConnectionDetector.isConnectingToInternet(getActivity())) {
 
@@ -162,6 +166,7 @@ public class ExperimentsFragment extends Fragment implements
                     // "Response: " + response.toString());
                     if (response != null) {
                         parseJsonFeed(response);
+                        mPreferences.setThemes(response.toString());
                     }
                 }
             }, new Response.ErrorListener() {
@@ -175,7 +180,23 @@ public class ExperimentsFragment extends Fragment implements
 
             // Adding request to volley request queue
             AppController.getInstance().addToRequestQueue(jsonReq);
-        } else {
+        }
+        else if(mPreferences.getThemes()!="") {
+            JSONObject themes;
+            try {
+                Log.i(getTag(),"Fetching from preferences :"+mPreferences.getThemes());
+                themes = new JSONObject(mPreferences.getThemes());
+                parseJsonFeed(themes);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                recyclerView.setVisibility(View.INVISIBLE);
+                pBar.setVisibility(View.INVISIBLE);
+                mSwipeLayout.setRefreshing(false);
+                txtNoNWMessage.setText("No data to display.");
+                txtNoNWMessage.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
 
             //listView.setVisibility(View.INVISIBLE);
             pBar.setVisibility(View.INVISIBLE);

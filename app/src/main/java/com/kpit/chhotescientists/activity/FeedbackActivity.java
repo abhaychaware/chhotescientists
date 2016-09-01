@@ -79,7 +79,7 @@ public class FeedbackActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(FeedbackActivity.this,
                                 getString(R.string.no_internet_msg),
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_LONG).show();
                     }
                 } else {
 

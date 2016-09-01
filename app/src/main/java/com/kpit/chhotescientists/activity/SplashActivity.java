@@ -146,10 +146,17 @@ public class SplashActivity extends AppCompatActivity {
 
             // Adding request to volley request queue
             AppController.getInstance().addToRequestQueue(jsonReq);
-        } else {
+        } else if (mPreferences.isFirstTimeLaunch()){
             Toast.makeText(
                     SplashActivity.this,
-                    getString(R.string.no_internet_msg), Toast.LENGTH_SHORT).show();
+                    getString(R.string.need_internet_msg), Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(
+                    SplashActivity.this,
+                    getString(R.string.no_internet_msg), Toast.LENGTH_LONG).show();
+            launchApplication();
         }
     }
 
@@ -200,17 +207,7 @@ public class SplashActivity extends AppCompatActivity {
 
                             } else {
 
-                                SplashActivity.this.finish();
-                                Intent i = new Intent(SplashActivity.this,
-                                        MainActivity.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
-                                        SplashActivity.this,
-                                        R.anim.in_right_animation,
-                                        R.anim.out_left_animation).toBundle();
-                                ActivityCompat.startActivity(
-                                        SplashActivity.this, i, bundle);
-
+                                launchApplication();
                             }
                         } else {
 
@@ -237,6 +234,19 @@ public class SplashActivity extends AppCompatActivity {
             }
         }).start();
 
+    }
+
+    private void launchApplication() {
+        SplashActivity.this.finish();
+        Intent i = new Intent(SplashActivity.this,
+                MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                SplashActivity.this,
+                R.anim.in_right_animation,
+                R.anim.out_left_animation).toBundle();
+        ActivityCompat.startActivity(
+                SplashActivity.this, i, bundle);
     }
 
     public void goToMyApp(boolean googlePlay) {
