@@ -37,6 +37,7 @@ import com.kpit.chhotescientists.model.StarRatingQuestion;
 import com.kpit.chhotescientists.model.Session;
 import com.kpit.chhotescientists.model.VideoUploadQuestion;
 import com.kpit.chhotescientists.util.AppController;
+import com.kpit.chhotescientists.util.ConnectionDetector;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -128,25 +129,34 @@ public class SessionFragment extends Fragment implements
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.get_schedules), dataObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            parseEventsJsonIntoAdapter(response);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: handle errors more gracefully.
-                        Log.d("SessionFragment", "Error with schedules: " + error.toString());
-                        Toast.makeText(getContext(), "Sorry! There was an error getting the schedules.", Toast.LENGTH_LONG).show();
-                    }
-        });
+        if (ConnectionDetector.isConnectingToInternet(getActivity())) {
 
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(
+                    Request.Method.POST, getString(R.string.get_schedules), dataObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (response != null) {
+                                parseEventsJsonIntoAdapter(response);
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // TODO: handle errors more gracefully.
+                    Log.d("SessionFragment", "Error with schedules: " + error.toString());
+                    Toast.makeText(getContext(), "Sorry! There was an error getting the schedules.", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            AppController.getInstance().addToRequestQueue(jsonObjReq);
+        }else {
+            recyclerView.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            swipeLayout.setRefreshing(false);
+            loadErrorTextView.setText("No data to display.");
+            loadErrorTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void parseEventsJsonIntoAdapter(JSONObject response) {

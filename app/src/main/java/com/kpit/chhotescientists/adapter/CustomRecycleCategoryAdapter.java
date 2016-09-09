@@ -38,6 +38,7 @@ public class CustomRecycleCategoryAdapter extends RecyclerView.Adapter<CustomRec
         CategoryVO item = feeditems.get(position);
         holder.txtHeading.setText(item.getCatName());
         holder.txtcount.setText(item.getCatNotificationCount());
+        holder.imgView.setImageResource(R.drawable.theme);
         holder.imgView.setImageUrl(item.getCatImage(), imageLoader);
     }
 

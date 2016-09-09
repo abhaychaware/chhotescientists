@@ -11,6 +11,7 @@ import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.custom.FeedImageView;
 import com.kpit.chhotescientists.pojo.ExperimentVO;
 import com.kpit.chhotescientists.util.AppController;
+import com.kpit.chhotescientists.util.ConnectionDetector;
 
 import java.util.List;
 
@@ -36,7 +37,9 @@ public class CustomRecycleExperimentAdapter extends RecyclerView.Adapter<CustomR
         ExperimentVO item = feeditems.get(position);
         holder.txtHeading.setText(item.getExpname());
         holder.txtDescription.setText(item.getExpdescriptionShort());
+        holder.imgView.setImageResource(R.drawable.theme);
         holder.imgView.setImageUrl(item.getExpicon(), imageLoader);
+
     }
 
     @Override

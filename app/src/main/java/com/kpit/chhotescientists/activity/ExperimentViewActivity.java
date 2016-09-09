@@ -28,6 +28,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.kpit.chhotescientists.R;
 import com.kpit.chhotescientists.adapter.CustomRecycleExperimentAdapter;
 import com.kpit.chhotescientists.common.MyPreferences;
+import com.kpit.chhotescientists.common.Utility;
 import com.kpit.chhotescientists.custom.DividerItemDecoration;
 import com.kpit.chhotescientists.pojo.CategoryVO;
 import com.kpit.chhotescientists.pojo.ExperimentVO;
@@ -282,12 +283,8 @@ public class ExperimentViewActivity extends AppCompatActivity implements
                         item.setExpname(feedObj.getString("exp_name"));
                         item.setExpdescription(feedObj.getString("exp_description"));
                         item.setExpdescriptionShort(feedObj.getString("exp_description_short"));
-                        if (ConnectionDetector.isConnectingToInternet(getApplicationContext())) {
-                            item.setExpicon(feedObj.getString("exp_icon_path"));
-                        }else {
-                            //item.setExpicon(getResources().getDrawable(R.drawable.ic_image_white_48dp));
+                        item.setExpicon(feedObj.getString("exp_icon_path"));
 
-                        }
                         JSONArray arrJson = feedObj.getJSONArray("exp_image_path");
                         String[] arr=new String[arrJson.length()];
                         for(int k=0;k<arrJson.length();k++) {

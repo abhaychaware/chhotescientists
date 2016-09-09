@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.kpit.chhotescientists.R;
+import com.kpit.chhotescientists.util.ConnectionDetector;
 
 /**
  * Created by VB on 4/20/2016.
@@ -52,13 +53,24 @@ public class PlayVideoActivity extends AppCompatActivity {
         web.setWebViewClient(new myWebClient());
         web.getSettings().setJavaScriptEnabled(true);
 
-        if (rcvdFlag.equals("1")) {
-            web.loadUrl(rcvdURL);
-        } else if (rcvdFlag.equals("2")) {
-            web.loadUrl("http://docs.google.com/gview?embedded=true&url=" + rcvdURL);
-        } else {
-            Toast.makeText(PlayVideoActivity.this, "Unable to load url", Toast.LENGTH_SHORT).show();
-            onBackPressed();
+        if (ConnectionDetector
+                .isConnectingToInternet(PlayVideoActivity.this)) {
+
+            if (rcvdFlag.equals("1")) {
+                web.loadUrl(rcvdURL);
+            } else if (rcvdFlag.equals("2")) {
+                web.loadUrl("http://docs.google.com/gview?embedded=true&url=" + rcvdURL);
+            } else {
+                Toast.makeText(PlayVideoActivity.this, "Unable to load url", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        }
+        else {
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(
+                    PlayVideoActivity.this,
+                    getString(R.string.no_internet_msg),
+                    Toast.LENGTH_LONG).show();
         }
 
 

@@ -23,7 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Cache;
 import com.kpit.chhotescientists.R;
+import com.kpit.chhotescientists.common.MyCache;
 import com.kpit.chhotescientists.pojo.ExperimentVO;
 import com.kpit.chhotescientists.util.ConnectionDetector;
 
@@ -38,12 +40,13 @@ public class ExperimentDetailActivity extends AppCompatActivity {
     TextView txtExpname, txtExpCat, txtExpDesc;
     Button btnPlayVideo, btnViewPDF;
     LinearLayout myGallery;
+    MyCache myCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experiment_detail);
-
+        myCache = MyCache.getInstance(getApplicationContext());
         //enable back button on action bar
         getSupportActionBar().show();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,10 +82,16 @@ public class ExperimentDetailActivity extends AppCompatActivity {
                 new ImageDownloaderTask().execute(path);
 
             } else {
-                Toast.makeText(
-                        ExperimentDetailActivity.this,
-                        getString(R.string.no_internet_msg),
-                        Toast.LENGTH_LONG).show();
+                Bitmap bm = (Bitmap) myCache.get(path);
+                if ( null != bm ) {
+                    myGallery.addView(insertPhoto(path, bm));
+                }
+                else {
+                    Toast.makeText(
+                            ExperimentDetailActivity.this,
+                            getString(R.string.no_internet_msg),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         }
 
@@ -245,7 +254,10 @@ public class ExperimentDetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bm) {
             if(bm!=null) {
+                Log.i(getLocalClassName(),"Cache = "+myCache);
+                myCache.put(path, bm);
                 myGallery.addView(insertPhoto(path, bm));
+
             }
         }
     }
