@@ -107,7 +107,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
 
-                <com.kpit.chhotescientists.custom.FeedImageView
+                <org.chhotescientists.custom.FeedImageView
                     android:id="@+id/update_image"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"

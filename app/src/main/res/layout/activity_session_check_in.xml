@@ -35,7 +35,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:orientation="vertical"
-                tools:context="com.kpit.chhotescientists.activity.SessionCheckInActivity">
+                tools:context="org.chhotescientists.activity.SessionCheckInActivity">
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

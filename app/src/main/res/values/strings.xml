@@ -37,4 +37,15 @@
     <string name="session_theme_transition">session theme transition</string>
     <string name="expected_student_count_transition">expected student count transition</string>
 
+    <string name="credit_text">Credits</string>
+
+    <string name="credit_text_1">Concept</string>
+    <string name="credit_text_2">Jnana Prabodhini Prashala\nKPIT Technologies Ltd.</string>
+
+    <string name="credit_text_3">Content and Media</string>
+    <string name="credit_text_4">Jnana Prabodhini Prashala</string>
+
+    <string name="credit_text_5">Application Support</string>
+    <string name="credit_text_6">Jnana Prabodhini Prashala\nKPIT Technologies Ltd.</string>
+
 </resources>

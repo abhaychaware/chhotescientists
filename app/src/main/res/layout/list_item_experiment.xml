@@ -8,7 +8,7 @@
     android:padding="8dp">
 
 
-    <com.kpit.chhotescientists.custom.FeedImageView
+    <org.chhotescientists.custom.FeedImageView
         android:id="@+id/exp_image"
         android:layout_width="90dp"
         android:layout_height="90dp"
