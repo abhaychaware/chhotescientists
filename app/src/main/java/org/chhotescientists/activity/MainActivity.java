@@ -62,9 +62,20 @@ public class MainActivity extends AppCompatActivity
         navUsername = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_username);
         navEmail = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_email);
 
-        navUsername.setText(myPreferences.getUserFullname());
-        navEmail.setText(myPreferences.getUserEmail());
-
+        if (myPreferences.isLoggedIn()) {
+            navUsername.setText(myPreferences.getUserFullname());
+            navEmail.setText(myPreferences.getUserEmail());
+            navView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+            navView.getMenu().findItem(R.id.nav_feedback).setVisible(true);
+            navView.getMenu().findItem(R.id.nav_logout).setVisible(true);
+            navView.getMenu().findItem(R.id.nav_login).setVisible(false);
+        }
+        else {
+            navView.getMenu().findItem(R.id.nav_profile).setVisible(false);
+            navView.getMenu().findItem(R.id.nav_feedback).setVisible(false);
+            navView.getMenu().findItem(R.id.nav_logout).setVisible(false);
+            navView.getMenu().findItem(R.id.nav_login).setVisible(true);
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -224,11 +235,27 @@ public class MainActivity extends AppCompatActivity
 
 
             //single sign on flag
-            myPreferences.setFirstTimeLaunch(true);
+
+            myPreferences.reset();
+
             Toast.makeText(MainActivity.this,
                     "Logout Successful.", Toast.LENGTH_SHORT)
                     .show();
             MainActivity.this.finish();
+            Intent i = new Intent(MainActivity.this,
+                    LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                    MainActivity.this,
+                    R.anim.in_right_animation,
+                    R.anim.out_left_animation).toBundle();
+            ActivityCompat.startActivity(
+                    MainActivity.this, i, bundle);
+
+
+        } else if (id == R.id.nav_login) {
+
+            
             Intent i = new Intent(MainActivity.this,
                     LoginActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

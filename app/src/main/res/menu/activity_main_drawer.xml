@@ -31,6 +31,11 @@
             android:title="Logout" />
 
         <item
+            android:id="@+id/nav_login"
+            android:icon="@mipmap/ic_logout_grey600_48dp"
+            android:title="Login" />
+
+        <item
             android:id="@+id/nav_credits"
             android:icon="@mipmap/handshake"
             android:title="Credits" />

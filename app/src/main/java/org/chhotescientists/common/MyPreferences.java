@@ -153,5 +153,17 @@ public class MyPreferences {
             editor.commit();
     }
 
+    public void reset()
+    {
+        setFirstTimeLaunch(true);
+        setUserId(null);
+        setUserEmail(null);
+        setUserMobile(null);
+        setUserFullname(null);
+        setUserResidence(null);
+        setUserCenter(null);
+        setLoggedIn(false);
+        setUserName(null);
+    }
 
 }

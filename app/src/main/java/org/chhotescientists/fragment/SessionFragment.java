@@ -95,11 +95,13 @@ public class SessionFragment extends Fragment implements
     }
 
     private void loadData() {
+
         // Make request params JSON object:
         JSONObject dataObject = new JSONObject();
+        MyPreferences preferences =null;
         try {
             JSONObject parameterObject = new JSONObject();
-            MyPreferences preferences = new MyPreferences(getContext());
+            preferences = new MyPreferences(getContext());
             parameterObject.put("user_id", preferences.getUserId());
             JSONArray dataArray = new JSONArray();
             dataArray.put(parameterObject);
@@ -111,25 +113,34 @@ public class SessionFragment extends Fragment implements
 
         if (ConnectionDetector.isConnectingToInternet(getActivity())) {
 
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(
-                    Request.Method.POST, getString(R.string.get_schedules), dataObject,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            if (response != null) {
-                                parseEventsJsonIntoAdapter(response);
+            if(preferences!=null&&preferences.isLoggedIn()) {
+                JsonObjectRequest jsonObjReq = new JsonObjectRequest(
+                        Request.Method.POST, getString(R.string.get_schedules), dataObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if (response != null) {
+                                    parseEventsJsonIntoAdapter(response);
+                                }
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // TODO: handle errors more gracefully.
-                    Log.d("SessionFragment", "Error with schedules: " + error.toString());
-                    Toast.makeText(getContext(), "Sorry! There was an error getting the schedules.", Toast.LENGTH_LONG).show();
-                }
-            });
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: handle errors more gracefully.
+                        Log.d("SessionFragment", "Error with schedules: " + error.toString());
+                        Toast.makeText(getContext(), "Sorry! There was an error getting the schedules.", Toast.LENGTH_LONG).show();
+                    }
+                });
 
-            AppController.getInstance().addToRequestQueue(jsonObjReq);
+                AppController.getInstance().addToRequestQueue(jsonObjReq);
+            }
+            else{
+                recyclerView.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                swipeLayout.setRefreshing(false);
+                loadErrorTextView.setText(R.string.must_be_logged_in);
+                loadErrorTextView.setVisibility(View.VISIBLE);
+            }
         }else {
             recyclerView.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.INVISIBLE);

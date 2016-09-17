@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--
     <string name="register_user">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/post_user_registration.php</string>
     <string name="get_locations_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/get_locations.php</string>
     <string name="get_centers_url">http://cityfi.in/dnyanesh/ChhoteScientists/restapi/get_centers.php</string>
+-->
 
+    <string name="register_user">http://www.chhotescientists.org/post_user_registration.php</string>
+    <string name="get_locations_url">http://www.chhotescientists.org/get_locations.php</string>
+    <string name="get_centers_url">http://www.chhotescientists.org/get_centers.php</string>
 
-    <string name="login_user">http://54.172.94.194/user/user/authenticate-user</string>
-    <string name="change_password_url">http://54.172.94.194/user/user/change-password</string>
-    <string name="forgot_password_url">http://54.172.94.194/user/user/forgot-password</string>
-    <string name="update_profile_url">http://54.172.94.194/user/user/update-user-profile</string>
+    <string name="login_user">http://www.chhotescientists.org/user/user/authenticate-user</string>
+    <string name="change_password_url">http://www.chhotescientists.org/user/user/change-password</string>
+    <string name="forgot_password_url">http://www.chhotescientists.org/user/user/forgot-password</string>
+    <string name="update_profile_url">http://www.chhotescientists.org/user/user/update-user-profile</string>
 
-    <string name="get_updates">http://54.172.94.194/user/user/get-updates</string>
-    <string name="get_themes">http://54.172.94.194/user/user/get-themes</string>
-    <string name="get_theme_experiments">http://54.172.94.194/user/user/get-theme-experiments</string>
-    <string name="send_contact_feedback">http://54.172.94.194/user/user/save-feedback</string>
-    <string name="version_check">http://54.172.94.194/user/user/check-version</string>
-    <string name="get_schedules">http://54.172.94.194/user/user/get-schedules</string>
-    <string name="upload_event_questionnaire">http://54.172.94.194/user/user/save-event-info</string>
-    <string name="upload_event_media">http://54.172.94.194/user/user/save-event-image-video</string>
+    <string name="get_updates">http://www.chhotescientists.org/user/user/get-updates</string>
+    <string name="get_themes">http://www.chhotescientists.org/user/user/get-themes</string>
+    <string name="get_theme_experiments">http://www.chhotescientists.org/user/user/get-theme-experiments</string>
+    <string name="send_contact_feedback">http://www.chhotescientists.org/user/user/save-feedback</string>
+    <string name="version_check">http://www.chhotescientists.org/user/user/check-version</string>
+    <string name="get_schedules">http://www.chhotescientists.org/user/user/get-schedules</string>
+    <string name="upload_event_questionnaire">http://www.chhotescientists.org/user/user/save-event-info</string>
+    <string name="upload_event_media">http://www.chhotescientists.org/user/user/save-event-image-video</string>
 
 
 </resources>

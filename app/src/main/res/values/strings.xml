@@ -47,5 +47,9 @@
 
     <string name="credit_text_5">Application Support</string>
     <string name="credit_text_6">Jnana Prabodhini Prashala\nKPIT Technologies Ltd.</string>
-
+    <string name="must_be_logged_in">You must be logged in to view this content.</string>
+    <string name="version_check_msg">Chhote Scientists app is out of date. Upgrade to the latest version to experience new features.</string>
+    <string name="no_pdf">This experiment does not have a PDF document.</string>
+    <string name="no_video">This experiment does not have a video.</string>
+    <string name="signup_text">Not Yet Registered ? Write to &lt;u>support@chhotescientists.org&lt;/u> to get registered.&lt;br/>To help us get you into appropriate role, please briefly mention how you plan to use the application.</string>
 </resources>

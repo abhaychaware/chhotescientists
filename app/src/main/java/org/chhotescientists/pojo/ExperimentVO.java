@@ -11,6 +11,34 @@ public class ExperimentVO implements Serializable {
 
     String expdescriptionShort;
     String expicon;
+    String expstandard;
+
+    public String getExpstandard() {
+        return expstandard;
+    }
+
+    public void setExpstandard(String expstandard) {
+        this.expstandard = expstandard;
+    }
+
+    public String getExpboard() {
+        return expboard;
+    }
+
+    public void setExpboard(String expboard) {
+        this.expboard = expboard;
+    }
+
+    public String getExptextbookreference() {
+        return exptextbookreference;
+    }
+
+    public void setExptextbookreference(String exptextbookreference) {
+        this.exptextbookreference = exptextbookreference;
+    }
+
+    String expboard;
+    String exptextbookreference;
     String expcat;
     String expVideoURL;
     String expPDFUrl;

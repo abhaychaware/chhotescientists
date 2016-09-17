@@ -33,7 +33,7 @@ import org.chhotescientists.util.ConnectionDetector;
 public class ExperimentDetailActivity extends AppCompatActivity {
     String rcvdCatID, rcvdCatName, rcvdExpName, rcvdVideoURL, rcvdPdfURL;
 
-    TextView txtExpname, txtExpCat, txtExpDesc;
+    TextView txtExpname, txtExpCat, txtExpDesc, txtExpRef;
     Button btnPlayVideo, btnViewPDF;
     LinearLayout myGallery;
     MyCache myCache;
@@ -50,6 +50,7 @@ public class ExperimentDetailActivity extends AppCompatActivity {
         txtExpname = (TextView) findViewById(R.id.textView2);
         txtExpCat = (TextView) findViewById(R.id.textView6);
         txtExpDesc = (TextView) findViewById(R.id.textView9);
+        txtExpRef = (TextView) findViewById(R.id.textView11);
         myGallery = (LinearLayout) findViewById(R.id.gallery);
 
         btnPlayVideo = (Button) findViewById(R.id.btn_play_video);
@@ -95,34 +96,52 @@ public class ExperimentDetailActivity extends AppCompatActivity {
         txtExpCat.setText(rcvdCatName);
         txtExpDesc.setText(Html.fromHtml(item.getExpdescription()));
 
+        txtExpRef.setText(Html.fromHtml("<b>Board : </b>" + item.getExpboard() + "<br><b>Standard : </b>" + item.getExpstandard() + "<br><b>Reference : </b>" + item.getExptextbookreference()));
+
         btnPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ExperimentDetailActivity.this, PlayVideoActivity.class);
-                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
-                        ExperimentDetailActivity.this, R.anim.in_right_animation,
-                        R.anim.out_left_animation).toBundle();
+                if (rcvdVideoURL==null || rcvdVideoURL.equals(""))
+                {
+                    Toast.makeText(
+                            ExperimentDetailActivity.this,
+                            getString(R.string.no_video),
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent i = new Intent(ExperimentDetailActivity.this, PlayVideoActivity.class);
+                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                            ExperimentDetailActivity.this, R.anim.in_right_animation,
+                            R.anim.out_left_animation).toBundle();
 
-                i.putExtra("expName", rcvdExpName);
-                i.putExtra("viewURL", rcvdVideoURL);
-                i.putExtra("flag", "1");
-
-
-                ActivityCompat.startActivity(ExperimentDetailActivity.this, i, bundle);
+                    i.putExtra("expName", rcvdExpName);
+                    i.putExtra("viewURL", rcvdVideoURL);
+                    i.putExtra("flag", "1");
+                    ActivityCompat.startActivity(ExperimentDetailActivity.this, i, bundle);
+                }
             }
         });
         btnViewPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ExperimentDetailActivity.this, PlayVideoActivity.class);
-                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
-                        ExperimentDetailActivity.this, R.anim.in_right_animation,
-                        R.anim.out_left_animation).toBundle();
+                if (rcvdPdfURL==null || rcvdPdfURL.equals(""))
+                {
+                    Toast.makeText(
+                            ExperimentDetailActivity.this,
+                            getString(R.string.no_pdf),
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent i = new Intent(ExperimentDetailActivity.this, PlayVideoActivity.class);
+                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                            ExperimentDetailActivity.this, R.anim.in_right_animation,
+                            R.anim.out_left_animation).toBundle();
 
-                i.putExtra("expName", rcvdExpName);
-                i.putExtra("viewURL", rcvdPdfURL);
-                i.putExtra("flag", "2");
-                ActivityCompat.startActivity(ExperimentDetailActivity.this, i, bundle);
+                    i.putExtra("expName", rcvdExpName);
+                    i.putExtra("viewURL", rcvdPdfURL);
+                    i.putExtra("flag", "2");
+                    ActivityCompat.startActivity(ExperimentDetailActivity.this, i, bundle);
+                }
             }
         });
 

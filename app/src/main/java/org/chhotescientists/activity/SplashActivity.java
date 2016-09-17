@@ -165,11 +165,13 @@ public class SplashActivity extends AppCompatActivity {
      */
     private void parseJsonFeed(final JSONObject response) {
         Log.e("###", response.toString());
-        new Thread(new Runnable() {
+
+                new Thread(new Runnable() {
 
             @Override
             public void run() {
 
+                boolean chk = false;
                 try {
                     JSONArray feedArray = response.getJSONArray("data");
 
@@ -178,19 +180,21 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject feedObj = (JSONObject) feedArray.get(i);
 
                         serverVersionCode = Integer.parseInt(feedObj.getString("version"));
+                        chk = feedObj.getString("mandatory").equalsIgnoreCase("YES");
 
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                final boolean versChk = chk;
                 SplashActivity.this.runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
 
                         if (verCode == serverVersionCode) {
-                            if (mPreferences.isFirstTimeLaunch()) {
+/*                            if (mPreferences.isFirstTimeLaunch()) {
 
                                 Log.e("Sigle Sign on", String.valueOf(mPreferences.isFirstTimeLaunch()));
 
@@ -205,16 +209,15 @@ public class SplashActivity extends AppCompatActivity {
                                 ActivityCompat.startActivity(
                                         SplashActivity.this, i, bundle);
 
-                            } else {
+                            } else {*/
 
                                 launchApplication();
-                            }
+                            /*}*/
                         } else {
 
-
                             AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
-                            builder.setMessage("Version Outdated,Update Your App")
-                                    .setCancelable(false)
+                            builder.setMessage(R.string.version_check_msg)
+                                    .setCancelable(!versChk)
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             //finish();
@@ -258,8 +261,8 @@ public class SplashActivity extends AppCompatActivity {
             try {
                 startActivity(new Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse((googlePlay ? "https://play.google.com/store/apps/details?id=com.kpit.chhotescientists"
-                                : "https://play.google.com/store/apps/details?id=com.kpit.chhotescientists")
+                        Uri.parse((googlePlay ? "https://play.google.com/store/apps/details?id=org.chhotescientists.core"
+                                : "https://play.google.com/store/apps/details?id=org.chhotescientists.core")
                                 + getPackageName())));
             } catch (ActivityNotFoundException e2) {
                 Toast.makeText(this,

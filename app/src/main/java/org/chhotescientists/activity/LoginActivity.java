@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     //Declaration
-    Button btnlogin;
+    Button btnlogin,btncancel;
     TextView txtSignup;
     TextView txtForgotPassword;
     EditText edtUsername, edtPassword;
@@ -59,6 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         txtSignup = (TextView) findViewById(R.id.linkRegister);
         txtForgotPassword = (TextView) findViewById(R.id.textView7);
         btnlogin = (Button) findViewById(R.id.btn_login);
+        btncancel = (Button) findViewById(R.id.btn_cancel);
+
+        btncancel.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                LoginActivity.this.finish();
+            }
+        });
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +98,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         });
-        txtSignup.setOnClickListener(new View.OnClickListener() {
+        txtSignup.setText(Html.fromHtml(String.format(getString(R.string.signup_text))));
+      /*  txtSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -99,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 ActivityCompat.startActivity(LoginActivity.this, i, bundle);
 
             }
-        });
+        });*/
 
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
 
@@ -214,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
             if (flag != 0) {
 
                 mProgressDialog.dismiss();
-
+                mPreferences.setLoggedIn(true);
 
                 LoginActivity.this.finish();
                 Intent i = new Intent(LoginActivity.this,

@@ -248,7 +248,8 @@ public class ExperimentViewActivity extends AppCompatActivity implements
             JSONArray dataJsonArray = new JSONArray();
 
             JSONObject queryJson = new JSONObject();
-            queryJson.put("theme_id", rcvdCatID);
+        queryJson.put("theme_id", rcvdCatID);
+        queryJson.put("standard", "");
 
             dataJsonArray.put(queryJson);
             textDataToSend.put("data", dataJsonArray);
@@ -282,7 +283,14 @@ public class ExperimentViewActivity extends AppCompatActivity implements
                         item.setExpdescription(feedObj.getString("exp_description"));
                         item.setExpdescriptionShort(feedObj.getString("exp_description_short"));
                         item.setExpicon(feedObj.getString("exp_icon_path"));
+                        try {
+                            item.setExpstandard(feedObj.getString("standard"));
+                            item.setExpboard(feedObj.getString("board"));
+                            item.setExptextbookreference(feedObj.getString("textbook_reference"));
+                        }catch (Exception r)
+                        {
 
+                        }
                         JSONArray arrJson = feedObj.getJSONArray("exp_image_path");
                         String[] arr=new String[arrJson.length()];
                         for(int k=0;k<arrJson.length();k++) {
