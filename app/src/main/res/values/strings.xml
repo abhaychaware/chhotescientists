@@ -40,13 +40,13 @@
     <string name="credit_text">Credits</string>
 
     <string name="credit_text_1">Concept</string>
-    <string name="credit_text_2">Jnana Prabodhini Prashala\nKPIT Technologies Ltd.</string>
+    <string name="credit_text_2">Jnana Prabodhini, Educational Activity Research Center\nKPIT Technologies Ltd.</string>
 
     <string name="credit_text_3">Content and Media</string>
-    <string name="credit_text_4">Jnana Prabodhini Prashala</string>
+    <string name="credit_text_4">Jnana Prabodhini, Educational Activity Research Center</string>
 
     <string name="credit_text_5">Application Support</string>
-    <string name="credit_text_6">Jnana Prabodhini Prashala\nKPIT Technologies Ltd.</string>
+    <string name="credit_text_6">Jnana Prabodhini, Educational Activity Research Center\nKPIT Technologies Ltd.</string>
     <string name="must_be_logged_in">You must be logged in to view this content.</string>
     <string name="version_check_msg">Chhote Scientists app is out of date. Upgrade to the latest version to experience new features.</string>
     <string name="no_pdf">This experiment does not have a PDF document.</string>
